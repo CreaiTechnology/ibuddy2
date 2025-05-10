@@ -35,22 +35,16 @@ jobs:
 
       - name: Build Storybook
         working-directory: ./client
-        # 简化构建命令，并在失败时添加更多信息
-        run: |
-          echo "Starting Storybook build..."
-          npm run build-storybook || { 
-            echo "Build failed! Error code: $?";
-            echo "Package versions:";
-            npm list --depth=0;
-            exit 1;
-          }
         env:
-          # 禁用 Husky Git 钩子
           HUSKY: '0'
-          # 增加 Node.js 内存限制
           NODE_OPTIONS: '--max_old_space_size=8192'
-          # 开启详细日志
-          DEBUG: '*'
+          CI: 'true'
+        run: npm run build-storybook || {
+          echo "Storybook build failed! Error code: $?";
+          echo "Package versions:";
+          npm list --depth=0;
+          exit 1;
+        }
 
       - name: Upload Storybook Artifact
         if: success()
