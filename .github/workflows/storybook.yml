@@ -39,12 +39,13 @@ jobs:
           HUSKY: '0'
           NODE_OPTIONS: '--max_old_space_size=8192'
           CI: 'true'
-        run: npm run build-storybook || {
-          echo "Storybook build failed! Error code: $?";
-          echo "Package versions:";
-          npm list --depth=0;
-          exit 1;
-        }
+        run: |
+          npm run build-storybook || {
+            echo "Storybook build failed! Error code: $?"
+            echo "Package versions:"
+            npm list --depth=0
+            exit 1
+          }
 
       - name: Upload Storybook Artifact
         if: success()
