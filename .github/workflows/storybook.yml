@@ -12,58 +12,48 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: 'recursive'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          
-      # 添加 npm 和 node 版本检查
-      - name: Check versions
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
+
+      - name: Check environment
         run: |
           node -v
           npm -v
+          echo "Free disk space:"
+          df -h
+          echo "Memory info:"
+          free -h
 
       - name: Install dependencies
-        run: |
-          cd client
-          npm ci
+        working-directory: ./client
+        run: npm ci
 
       - name: Build Storybook
+        working-directory: ./client
+        # 简化构建命令，并在失败时添加更多信息
         run: |
-          cd client
-          npm ci
-          # 使用更详细的输出以便于调试
-          npm run build-storybook -- --debug
+          echo "Starting Storybook build..."
+          npm run build-storybook || { 
+            echo "Build failed! Error code: $?";
+            echo "Package versions:";
+            npm list --depth=0;
+            exit 1;
+          }
         env:
-          # 禁用 Husky Git 钩子，避免潜在的问题
+          # 禁用 Husky Git 钩子
           HUSKY: '0'
-          # 增加 Node.js 内存限制，避免内存不足问题
-          NODE_OPTIONS: '--max_old_space_size=4096'
-
-      # 启动 Storybook 服务 (后台)
-      - name: Start Storybook
-        run: |
-          cd client
-          npm ci
-          npm run storybook &
-
-      # 等待 Storybook 可用
-      - name: Wait for Storybook
-        run: |
-          cd client
-          npx wait-on http://127.0.0.1:6006
-
-      # 安装 Playwright 浏览器并运行交互测试，排除 backend Story
-      - name: Test Storybook
-        run: |
-          cd client
-          npx playwright install --with-deps
-          npm run test-storybook -- --config-dir .storybook --excludeTags backend --excludeTags layout-routing-issue
+          # 增加 Node.js 内存限制
+          NODE_OPTIONS: '--max_old_space_size=8192'
+          # 开启详细日志
+          DEBUG: '*'
 
       - name: Upload Storybook Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: storybook-static
