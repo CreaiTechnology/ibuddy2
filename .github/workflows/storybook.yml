@@ -29,9 +29,23 @@ jobs:
           echo "Memory info:"
           free -h
 
+      - name: List Storybook directory
+        run: |
+          ls -la client/.storybook
+
       - name: Install dependencies
         working-directory: ./client
-        run: npm ci
+        run: |
+          npm ci
+          echo "Installed dependencies:"
+          npm list --depth=0 | grep storybook
+
+      - name: Fix Storybook path issues
+        working-directory: ./client
+        run: |
+          # 修复Windows路径分隔符问题
+          sed -i 's/\\\\/\//g' .storybook/main.js
+          cat .storybook/main.js
 
       - name: Build Storybook
         working-directory: ./client
@@ -40,8 +54,13 @@ jobs:
           NODE_OPTIONS: '--max_old_space_size=8192'
           CI: 'true'
         run: |
-          npm run build-storybook || {
-            echo "Storybook build failed! Error code: $?"
+          # 保存详细日志以便调试
+          npm run build-storybook --loglevel=verbose > build-output.log 2>&1 || {
+            echo "===== BUILD FAILED! ====="
+            echo "Last 100 lines of build log:"
+            tail -n 100 build-output.log
+            echo "===== DETAILED ERROR INFO ====="
+            grep -A 10 -B 5 "ERR!" build-output.log || true
             echo "Package versions:"
             npm list --depth=0
             exit 1
