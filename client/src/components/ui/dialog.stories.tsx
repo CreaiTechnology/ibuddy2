@@ -11,6 +11,7 @@ import {
 } from './dialog';
 import React from 'react';
 import { Button } from './button';
+import { expect, userEvent, within } from '@storybook/test';
 
 const meta = {
   title: 'UI/Dialog',
@@ -64,7 +65,7 @@ export const Default: Story = {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="outline">
+            <Button type="button">
               取消
             </Button>
           </DialogClose>
@@ -73,6 +74,34 @@ export const Default: Story = {
       </DialogContent>
     </Dialog>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // 对话框应该是关闭的
+    const dialog = canvas.queryByRole('dialog');
+    expect(dialog).not.toBeInTheDocument();
+    
+    // 点击打开按钮
+    const openButton = canvas.getByRole('button', { name: /打开对话框/i });
+    await userEvent.click(openButton);
+    
+    // 对话框应该打开
+    const openDialog = canvas.getByRole('dialog');
+    expect(openDialog).toBeInTheDocument();
+    
+    // 检查对话框的内容
+    expect(within(openDialog).getByText('编辑个人资料')).toBeInTheDocument();
+    
+    // 关闭对话框
+    const cancelButton = within(openDialog).getByRole('button', { name: /取消/i });
+    await userEvent.click(cancelButton);
+    
+    // 等待对话框关闭的动画
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    
+    // 对话框应该再次关闭
+    expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+  },
 };
 
 /**
@@ -82,7 +111,7 @@ export const Confirmation: Story = {
   render: () => (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="destructive">删除账户</Button>
+        <Button>删除账户</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -93,17 +122,40 @@ export const Confirmation: Story = {
         </DialogHeader>
         <DialogFooter className="mt-4">
           <DialogClose asChild>
-            <Button type="button" variant="outline">
+            <Button type="button">
               取消
             </Button>
           </DialogClose>
-          <Button type="submit" variant="destructive">
-            确认删除
-          </Button>
+          <Button type="submit" data-testid="confirm-delete">确认删除</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // 点击删除按钮
+    const deleteButton = canvas.getByRole('button', { name: /删除账户/i });
+    await userEvent.click(deleteButton);
+    
+    // 确认对话框应该打开
+    const dialog = canvas.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+    
+    // 检查确认按钮是否存在
+    const confirmButton = within(dialog).getByTestId('confirm-delete');
+    expect(confirmButton).toBeInTheDocument();
+    
+    // 点击取消按钮
+    const cancelButton = within(dialog).getByRole('button', { name: /取消/i });
+    await userEvent.click(cancelButton);
+    
+    // 等待对话框关闭的动画
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    
+    // 对话框应该关闭
+    expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+  },
 };
 
 /**
@@ -113,7 +165,7 @@ export const Information: Story = {
   render: () => (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">查看详情</Button>
+        <Button>查看详情</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>

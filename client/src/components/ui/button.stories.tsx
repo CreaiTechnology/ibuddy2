@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button, type ButtonProps } from './button';
 import { ArrowRight, Mail, Loader2 } from 'lucide-react';
 import React from 'react';
+import { expect, userEvent, within } from '@storybook/test';
 
 /**
  * 按钮用于触发操作或事件，例如提交表单、打开对话框、取消操作或执行删除操作。
@@ -45,6 +46,18 @@ export const Default: Story = {
   args: {
     children: '按钮',
     variant: 'default',
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    
+    // 模拟按钮点击
+    const button = canvas.getByRole('button', { name: /按钮/i });
+    await userEvent.click(button);
+    
+    // 检查onClick是否被调用
+    if (args.onClick) {
+      await expect(args.onClick).toHaveBeenCalled();
+    }
   },
 };
 
@@ -165,5 +178,20 @@ export const Disabled: Story = {
   args: {
     children: '禁用',
     disabled: true,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    
+    // 模拟按钮点击
+    const button = canvas.getByRole('button', { name: /禁用/i });
+    await userEvent.click(button);
+    
+    // 确认按钮处于禁用状态
+    await expect(button).toBeDisabled();
+    
+    // 如果提供了onClick，确保它没有被调用
+    if (args.onClick) {
+      await expect(args.onClick).not.toHaveBeenCalled();
+    }
   },
 }; 

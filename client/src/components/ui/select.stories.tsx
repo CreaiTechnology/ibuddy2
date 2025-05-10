@@ -10,6 +10,7 @@ import {
   SelectValue,
   SelectSeparator
 } from './select';
+import { expect, userEvent, within } from '@storybook/test';
 
 const meta = {
   title: 'UI/Select',
@@ -43,6 +44,29 @@ export const Default: Story = {
       </SelectContent>
     </Select>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // 选择框应该默认显示占位符
+    const trigger = canvas.getByRole('combobox');
+    expect(trigger).toHaveTextContent('选择一个水果');
+    
+    // 点击触发器打开下拉菜单
+    await userEvent.click(trigger);
+    
+    // 等待下拉菜单打开
+    const options = canvas.getAllByRole('option');
+    expect(options.length).toBe(5);
+    
+    // 点击选择"香蕉"选项
+    const bananaOption = options.find(option => option.textContent === '香蕉');
+    if (bananaOption) {
+      await userEvent.click(bananaOption);
+    }
+    
+    // 选择框应该现在显示"香蕉"
+    expect(trigger).toHaveTextContent('香蕉');
+  }
 };
 
 /**
@@ -78,6 +102,24 @@ export const Grouped: Story = {
       </SelectContent>
     </Select>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // 点击触发器打开下拉菜单
+    const trigger = canvas.getByRole('combobox');
+    await userEvent.click(trigger);
+    
+    // 检查分组标签是否存在
+    const northChinaLabel = canvas.getByText('华北地区');
+    expect(northChinaLabel).toBeInTheDocument();
+    
+    // 选择"上海"选项
+    const shanghaiOption = canvas.getByRole('option', { name: '上海' });
+    await userEvent.click(shanghaiOption);
+    
+    // 选择框应该显示"上海"
+    expect(trigger).toHaveTextContent('上海');
+  }
 };
 
 /**
@@ -113,6 +155,27 @@ export const Disabled: Story = {
       </Select>
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // 第一个选择框应该被禁用
+    const disabledTrigger = canvas.getByText('禁用选择框').closest('button');
+    expect(disabledTrigger).toBeDisabled();
+    
+    // 尝试点击禁用的选择框（不应该打开）
+    await userEvent.click(disabledTrigger!);
+    
+    // 点击第二个选择框
+    const partialDisabledTrigger = canvas.getByText('部分选项禁用').closest('button');
+    await userEvent.click(partialDisabledTrigger!);
+    
+    // 选择一个可用的选项
+    const appleOption = canvas.getByRole('option', { name: '苹果' });
+    await userEvent.click(appleOption);
+    
+    // 选择框应该显示"苹果"
+    expect(partialDisabledTrigger).toHaveTextContent('苹果');
+  }
 };
 
 /**
@@ -158,4 +221,22 @@ export const InForm: Story = {
       </div>
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // 检查默认选择的支付方式
+    const paymentTrigger = canvas.getByLabelText('支付方式');
+    expect(paymentTrigger).toHaveTextContent('支付宝');
+    
+    // 选择配送地址
+    const locationTrigger = canvas.getByLabelText('配送地址');
+    await userEvent.click(locationTrigger);
+    
+    // 选择"深圳"
+    const shenzhenOption = canvas.getByRole('option', { name: '深圳' });
+    await userEvent.click(shenzhenOption);
+    
+    // 地址选择框应该显示"深圳"
+    expect(locationTrigger).toHaveTextContent('深圳');
+  }
 }; 
