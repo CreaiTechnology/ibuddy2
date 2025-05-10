@@ -1,0 +1,97 @@
+import { Meta, Story } from '@storybook/blocks';
+import * as ButtonStories from '../components/ui/button.stories';
+import * as CardStories from '../components/ui/card.stories';
+import * as AlertStories from '../components/ui/alert.stories';
+import * as DialogStories from '../components/ui/dialog.stories';
+import * as SelectStories from '../components/ui/select.stories';
+
+<Meta title="文档/UI组件库" />
+
+# UI组件库
+
+我们的UI组件库是基于统一设计系统构建的一组可重用React组件。这些组件遵循一致的设计语言，提供了一致的用户体验，并且高度可定制。
+
+## 设计原则
+
+- **一致性**：所有组件遵循相同的设计语言和交互模式
+- **可访问性**：符合WCAG 2.1 AA标准，确保所有用户都能使用
+- **可定制性**：支持主题定制和样式覆盖
+- **性能优化**：轻量级实现，最小化渲染成本
+- **类型安全**：使用TypeScript构建，提供完整的类型定义
+
+## 组件概览
+
+### 按钮 (Button)
+
+按钮用于触发操作或事件，可以有多种变体和大小。
+
+<Story of={ButtonStories.Default} />
+<Story of={ButtonStories.Secondary} />
+<Story of={ButtonStories.Destructive} />
+
+### 卡片 (Card)
+
+卡片是容器组件，用于分组和展示相关内容和操作。
+
+<Story of={CardStories.Default} />
+<Story of={CardStories.ProductCard} />
+
+### 警告提示 (Alert)
+
+警告提示用于向用户显示重要信息，如错误、警告或成功消息。
+
+<Story of={AlertStories.Default} />
+<Story of={AlertStories.Destructive} />
+
+### 对话框 (Dialog)
+
+对话框是一个模态窗口，用于请求用户输入或确认。
+
+<Story of={DialogStories.Default} />
+<Story of={DialogStories.Confirmation} />
+
+### 选择框 (Select)
+
+选择框允许用户从预定义选项列表中进行选择。
+
+<Story of={SelectStories.Default} />
+<Story of={SelectStories.Grouped} />
+
+## 最佳实践
+
+### 一致性使用
+
+- 在整个应用程序中保持一致的组件使用
+- 不要混合使用不同设计系统的组件
+- 遵循设计指南和模式
+
+### 可访问性考虑
+
+- 始终为表单元素提供标签
+- 使用合适的ARIA属性
+- 确保足够的颜色对比度
+- 支持键盘导航
+
+### 性能优化
+
+- 避免不必要的重渲染
+- 对于大型列表和表格，考虑虚拟化
+- 有条件地加载复杂组件
+
+## 贡献指南
+
+如果您想为组件库做出贡献，请遵循以下步骤：
+
+1. 确保您的组件符合我们的设计规范
+2. 编写清晰的文档和示例
+3. 包含单元测试和Storybook故事
+4. 确保组件是完全可访问的
+5. 提交PR并等待审核
+
+## 更新日志
+
+### 最新版本: 1.0.0
+
+- 初始版本发布
+- 包含核心UI组件
+- 完整的文档和Storybook集成 
