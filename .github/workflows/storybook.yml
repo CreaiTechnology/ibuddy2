@@ -19,6 +19,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+          
+      # 添加 npm 和 node 版本检查
+      - name: Check versions
+        run: |
+          node -v
+          npm -v
 
       - name: Install dependencies
         run: |
@@ -29,7 +35,13 @@ jobs:
         run: |
           cd client
           npm ci
-          npm run build-storybook
+          # 使用更详细的输出以便于调试
+          npm run build-storybook -- --debug
+        env:
+          # 禁用 Husky Git 钩子，避免潜在的问题
+          HUSKY: '0'
+          # 增加 Node.js 内存限制，避免内存不足问题
+          NODE_OPTIONS: '--max_old_space_size=4096'
 
       # 启动 Storybook 服务 (后台)
       - name: Start Storybook
