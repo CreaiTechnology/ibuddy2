@@ -68,3 +68,111 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# UI组件库
+
+这是一个基于React和Storybook构建的UI组件库，提供了一组可重用的组件，包括按钮、卡片、警告提示、对话框和选择框等。
+
+## 特点
+
+- 📚 完整的组件文档
+- 🧪 交互测试集成
+- ♿ 可访问性合规
+- 🔄 持续集成流程
+- 🎨 主题定制支持
+
+## 安装
+
+```bash
+# 安装项目依赖
+npm install
+```
+
+## 开发
+
+### 启动Storybook开发环境
+
+```bash
+npm run storybook
+```
+
+这将在开发模式下启动Storybook，通常在 http://localhost:6006 访问。
+
+### 构建Storybook静态文件
+
+```bash
+npm run build-storybook
+```
+
+构建后的文件将位于`storybook-static`目录中。
+
+### 运行Storybook测试
+
+```bash
+# 先构建Storybook
+npm run build-storybook
+
+# 然后运行测试
+npm run test-storybook
+
+# 或者使用CI测试命令（包含启动服务器和运行测试）
+npm run ci-test-storybook
+```
+
+## 组件列表
+
+项目包含以下核心组件：
+
+- **Button** - 按钮组件，支持多种变体和大小
+- **Card** - 卡片容器组件
+- **Alert** - 警告提示组件
+- **Dialog** - 对话框组件
+- **Select** - 选择框组件
+
+每个组件都有详细的文档和使用示例。
+
+## 开发指南
+
+### 添加新组件
+
+1. 在`src/components/ui`目录下创建组件文件
+2. 创建相应的故事文件（`.stories.tsx`）
+3. 添加交互测试
+4. 更新文档
+
+### 交互测试
+
+交互测试使用Storybook的Play函数实现，示例：
+
+```tsx
+export const Default: Story = {
+  render: () => <Button>点击我</Button>,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: /点击我/i });
+    await userEvent.click(button);
+    // 添加断言检查按钮行为
+  }
+};
+```
+
+## CI/CD流程
+
+项目使用GitHub Actions进行持续集成和部署：
+
+- 每次提交或PR时自动构建和测试Storybook
+- 合并到主分支时自动部署到GitHub Pages
+- 测试结果以JUnit格式保存并上传为工作流构件
+
+## 贡献指南
+
+1. Fork项目并克隆到本地
+2. 创建新的特性分支
+3. 提交更改并推送到你的Fork
+4. 创建Pull Request
+
+请确保所有组件都有相应的故事和测试。
+
+## 许可证
+
+ISC许可证
