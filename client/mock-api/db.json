@@ -1,0 +1,175 @@
+{
+  "services": [
+    {
+      "id": "1",
+      "name": "标准理发",
+      "duration": 30,
+      "price": 120,
+      "color": "#4285F4",
+      "description": "标准理发服务，包括洗发和造型",
+      "status": "active"
+    },
+    {
+      "id": "2",
+      "name": "高级造型",
+      "duration": 60,
+      "price": 200,
+      "color": "#EA4335",
+      "description": "高级造型服务，包括洗发、剪发、吹风和特殊造型",
+      "status": "active"
+    },
+    {
+      "id": "3",
+      "name": "洗发和护理",
+      "duration": 45,
+      "price": 150,
+      "color": "#FBBC05",
+      "description": "深度洗发和护理，适合所有发质",
+      "status": "active"
+    },
+    {
+      "id": "4",
+      "name": "染发",
+      "duration": 120,
+      "price": 350,
+      "color": "#34A853",
+      "description": "专业染发服务，包括颜色咨询",
+      "status": "active"
+    },
+    {
+      "id": "5",
+      "name": "快速修剪",
+      "duration": 20,
+      "price": 80,
+      "color": "#8A2BE2",
+      "description": "快速修剪发尾和刘海",
+      "status": "active"
+    }
+  ],
+  "appointments": [
+    {
+      "id": "1",
+      "title": "张先生 - 标准理发",
+      "start": "2023-05-01T09:00:00",
+      "end": "2023-05-01T09:30:00",
+      "serviceId": 1,
+      "clientName": "张先生",
+      "clientPhone": "13812345678",
+      "status": "confirmed"
+    },
+    {
+      "id": "2",
+      "title": "李女士 - 高级造型",
+      "start": "2023-05-01T10:00:00",
+      "end": "2023-05-01T11:00:00",
+      "serviceId": 2,
+      "clientName": "李女士",
+      "clientPhone": "13987654321",
+      "status": "confirmed"
+    },
+    {
+      "id": "3",
+      "title": "王先生 - 洗发和护理",
+      "start": "2023-05-01T11:30:00",
+      "end": "2023-05-01T12:15:00",
+      "serviceId": 3,
+      "clientName": "王先生",
+      "clientPhone": "13745678901",
+      "status": "confirmed"
+    },
+    {
+      "id": "4",
+      "title": "赵女士 - 染发",
+      "start": "2023-05-01T13:00:00",
+      "end": "2023-05-01T15:00:00",
+      "serviceId": 4,
+      "clientName": "赵女士",
+      "clientPhone": "13698765432",
+      "status": "confirmed"
+    },
+    {
+      "id": "5",
+      "title": "刘女士 - 快速修剪",
+      "start": "2023-05-01T15:30:00",
+      "end": "2023-05-01T15:50:00",
+      "serviceId": 5,
+      "clientName": "刘女士",
+      "clientPhone": "13567890123",
+      "status": "confirmed"
+    },
+    {
+      "id": "0815",
+      "title": "1",
+      "serviceId": "1",
+      "start": "2025-04-18T16:00:00.000Z",
+      "end": "2025-04-18T17:00:00.000Z",
+      "source": "walkin"
+    },
+    {
+      "id": "5928",
+      "title": "ong",
+      "serviceId": "2",
+      "start": "2025-04-18T18:00:00.000Z",
+      "end": "2025-04-18T18:30:00.000Z",
+      "source": "walkin"
+    }
+  ],
+  "teams": [
+    {
+      "id": "1",
+      "name": "北区服务团队",
+      "colour": "#4caf50",
+      "max_overlap": 2,
+      "members": ["张三", "李四", "王五"],
+      "status": "active"
+    },
+    {
+      "id": "2",
+      "name": "南区服务团队",
+      "colour": "#2196f3",
+      "max_overlap": 3,
+      "members": ["赵六", "钱七", "孙八", "周九"],
+      "status": "active"
+    },
+    {
+      "id": "3",
+      "name": "东区服务团队",
+      "colour": "#ff9800",
+      "max_overlap": 2,
+      "members": ["吴十", "郑十一", "王十二"],
+      "status": "active"
+    },
+    {
+      "id": "4",
+      "name": "西区服务团队",
+      "colour": "#f44336",
+      "max_overlap": 4,
+      "members": ["冯十三", "陈十四", "楚十五", "魏十六"],
+      "status": "active"
+    },
+    {
+      "id": "5",
+      "name": "VIP专属团队",
+      "colour": "#9c27b0",
+      "max_overlap": 1,
+      "members": ["刘十七", "关十八"],
+      "status": "active"
+    },
+    {
+      "id": "a1",
+      "name": "Team A1",
+      "colour": "#e91e63",
+      "max_overlap": 2,
+      "members": ["Alex", "Bob", "Charlie"],
+      "status": "active"
+    },
+    {
+      "id": "a2",
+      "name": "Team A2",
+      "colour": "#009688",
+      "max_overlap": 3,
+      "members": ["David", "Emma", "Frank", "Grace"],
+      "status": "active"
+    }
+  ]
+}

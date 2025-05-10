@@ -1,0 +1,127 @@
+.team-assignment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.team-assignment-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.team-assignment-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.team-assignment-modal .modal-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.team-assignment-modal .close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+
+.team-assignment-modal .modal-body {
+  padding: 20px;
+}
+
+.team-assignment-modal .appointment-info {
+  margin-bottom: 20px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border-left: 4px solid #4caf50;
+}
+
+.team-assignment-modal .appointment-info p {
+  margin: 6px 0;
+}
+
+.team-assignment-modal .team-selector {
+  margin-top: 15px;
+}
+
+.team-assignment-modal .team-selector label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.team-assignment-modal .team-selector select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+}
+
+.team-assignment-modal .error-message {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.team-assignment-modal .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  gap: 10px;
+}
+
+.team-assignment-modal button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.team-assignment-modal button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.team-assignment-modal .cancel-button {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.team-assignment-modal .cancel-button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.team-assignment-modal .confirm-button {
+  background-color: #4caf50;
+  border: 1px solid #43a047;
+  color: white;
+}
+
+.team-assignment-modal .confirm-button:hover:not(:disabled) {
+  background-color: #43a047;
+} 

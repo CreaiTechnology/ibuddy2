@@ -1,0 +1,60 @@
+/* TeamSettingsModal.css */
+
+/* Style for the list group item */
+.team-list-item {
+    transition: background-color 0.2s ease-in-out;
+}
+
+.team-list-item:hover {
+    background-color: #f8f9fa; /* Light grey background on hover */
+}
+
+/* Color indicator circle */
+.team-color-indicator {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #dee2e6; /* Light border for visibility */
+    vertical-align: middle;
+}
+
+/* Selected color display in the form */
+.selected-color-display {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #ced4da;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
+}
+
+/* Ensure react-color picker aligns nicely */
+.circle-picker {
+    margin-right: 15px; /* Add some space between picker and display */
+}
+
+/* Adjust modal body padding if necessary */
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Styling for the delete confirmation modal */
+.modal-sm .modal-title {
+    font-size: 1.1rem;
+}
+
+.modal-sm .modal-body {
+    font-size: 0.95rem;
+}
+
+/* Center spinner in loading state */
+.text-center .spinner-border {
+    margin: 2rem auto;
+}
+
+/* Ensure form labels have consistent width */
+.form-label.col-sm-3 {
+    text-align: right;
+    padding-right: 10px;
+} 

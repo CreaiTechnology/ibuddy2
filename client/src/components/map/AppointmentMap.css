@@ -1,0 +1,1043 @@
+.appointment-map-container {
+  display: flex;
+  flex-direction: column;
+  height: 700px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.map-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.map-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-filter-container {
+  margin: 0 10px;
+}
+
+.team-filter-select {
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  font-size: 14px;
+  min-width: 140px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  background-color: #f8f9fa;
+  color: #495057;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background-color: #e9ecef;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+.btn-active {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.btn-active:hover {
+  background-color: #218838;
+}
+
+.btn-default {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.customer-location-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f8f9fa;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+}
+
+.customer-location-input input {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  font-size: 14px;
+  width: 180px;
+}
+
+.customer-location-input button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.customer-location-input button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.customer-location-input label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.loading-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.loading-text:after {
+  content: "...";
+  animation: loadingDots 1.5s infinite;
+  width: 16px;
+  text-align: left;
+}
+
+@keyframes loadingDots {
+  0% { content: "."; }
+  33% { content: ".."; }
+  66% { content: "..."; }
+}
+
+/* Location input container and tabs */
+.location-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 260px;
+}
+
+.location-input-tabs {
+  display: flex;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.tab-button {
+  flex: 1;
+  background-color: #f8f9fa;
+  border: none;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.tab-button:not(:last-child) {
+  border-right: 1px solid #ddd;
+}
+
+.tab-button.active {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.pin-mode-info {
+  padding: 6px 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #495057;
+  border: 1px dashed #ddd;
+  text-align: center;
+}
+
+/* Customer location input */
+.customer-location-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.customer-location-field {
+  width: 160px;
+  padding: 6px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.address-field {
+  width: 200px;
+}
+
+.customer-location-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.customer-location-btn:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.customer-location-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.customer-location-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #e9f7fe;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #b3e5fc;
+}
+
+.clear-location-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+
+.clear-location-btn:hover {
+  color: #bd2130;
+}
+
+.customer-location-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #495057;
+  cursor: pointer;
+}
+
+.customer-location-toggle input {
+  margin: 0;
+}
+
+/* Route controls */
+.route-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.optimize-route-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #455a64;
+}
+
+.optimize-route-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.optimize-route-toggle label {
+  cursor: pointer;
+}
+
+.route-button {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s;
+}
+
+.route-button:before {
+  content: "🗺️";
+  font-size: 16px;
+}
+
+.route-button:hover:not(:disabled) {
+  background-color: #303f9f;
+}
+
+.route-button:disabled {
+  background-color: #c5cae9;
+  cursor: not-allowed;
+}
+
+.clear-button {
+  background-color: #78909c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s;
+}
+
+.clear-button:before {
+  content: "❌";
+  font-size: 14px;
+}
+
+.clear-button:hover {
+  background-color: #546e7a;
+}
+
+.route-error {
+  padding: 10px 16px;
+  background-color: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #ef5350;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.map-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.appointment-list-panel {
+  width: 300px;
+  overflow-y: auto;
+  border-right: 1px solid #eaeaea;
+  background-color: #f8f9fa;
+}
+
+.appointment-list-panel h4 {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.appointment-list-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.appointment-list-panel li {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eaeaea;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.appointment-list-panel li:hover {
+  background-color: #e9ecef;
+}
+
+.appointment-list-panel li.selected {
+  background-color: #e2f6ff;
+  border-left: 3px solid #007bff;
+}
+
+.appointment-list-panel li.no-coords {
+  opacity: 0.85;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  border-left: 3px solid #ffc107;
+}
+
+.appointment-list-panel li.has-coords {
+  border-left: 3px solid #28a745;
+}
+
+.appointment-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 4px;
+}
+
+/* Route order badge */
+.route-order-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #28a745;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-left: 4px;
+}
+
+.appointment-client {
+  font-size: 16px;
+  font-weight: 500;
+  color: #212529;
+  margin-bottom: 4px;
+}
+
+.appointment-service-name, .appointment-team-name, .appointment-address, .appointment-contact {
+  font-size: 0.85em;
+  color: #495057;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.appointment-address, .appointment-contact {
+  color: #666;
+  font-size: 0.8em;
+  line-height: 1.3;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: flex;
+  align-items: flex-start;
+  min-height: 20px;
+}
+
+.appointment-address span[role="img"], .appointment-contact span[role="img"] {
+  margin-right: 6px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #6c757d;
+}
+
+.appointment-address:empty, .appointment-contact:empty {
+  display: none;
+}
+
+/* Empty address/contact styles */
+.appointment-address:only-child, .appointment-contact:only-child {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* Service time input styles */
+.service-time-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #495057;
+}
+
+.service-time-input input {
+  width: 60px;
+  padding: 4px 6px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.minutes-label {
+  font-size: 11px;
+  color: #6c757d;
+}
+
+.geocode-failed-indicator {
+  margin-top: 5px;
+  font-size: 0.8em;
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 3px 6px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.leaflet-map-container {
+  flex: 1;
+  position: relative;
+}
+
+.leaflet-map {
+  width: 100%;
+  height: 100%;
+}
+
+.map-error,
+.map-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+  color: #6c757d;
+  text-align: center;
+  font-size: 16px;
+}
+
+.map-error {
+  color: #e03131;
+}
+
+.map-info-window {
+  min-width: 200px;
+}
+
+.map-info-window h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #212529;
+}
+
+.map-info-window p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #495057;
+}
+
+.appointment-list-panel .appointment-service-name {
+  color: #000000 !important;
+  font-size: 0.85em;
+  margin-top: 3px;
+}
+
+.appointment-service-name span[role="img"] {
+  margin-right: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .map-content {
+    flex-direction: column;
+  }
+  
+  .appointment-list-panel {
+    flex: 0 0 200px;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .map-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .map-actions {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+/* Route info banner */
+.route-info-banner {
+  background-color: #e1f5fe;
+  border-top: 1px solid #b3e5fc;
+  border-bottom: 1px solid #b3e5fc;
+  padding: 12px 16px;
+  margin-bottom: 0;
+}
+
+/* Route line styles */
+.leaflet-container .route-segment {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s ease;
+}
+
+.route-segment:hover {
+  stroke-width: 8px !important;
+  opacity: 0.9 !important;
+  cursor: pointer;
+}
+
+/* Custom marker icon styles */
+.custom-map-marker {
+  background: transparent;
+  border: none;
+}
+
+.custom-map-marker .marker-container {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  background-color: white;
+  overflow: visible;
+}
+
+.custom-map-marker .marker-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.custom-map-marker .marker-text {
+  font-size: 14px;
+}
+
+.custom-map-marker .accuracy-indicator {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.customer-map-marker {
+  background-color: #4caf50;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+.pin-map-marker div {
+  font-size: 20px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Route tooltip styles */
+.route-tooltip {
+  font-size: 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+}
+
+.route-segment-info {
+  margin-bottom: 4px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 4px;
+}
+
+.route-segment-warning {
+  color: #e74c3c;
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+/* Service time circle styles */
+.service-time-circle {
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+}
+
+.service-time-tooltip {
+  background-color: rgba(76, 175, 80, 0.9) !important;
+  color: white !important;
+  border: none !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  white-space: nowrap;
+}
+
+.no-appointments {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  color: #495057;
+}
+
+/* Geocoding status and retry button */
+.geocode-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: 0.9em;
+}
+
+.success-count {
+  color: #28a745;
+}
+
+.retry-geocoding {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retry-geocoding:hover {
+  background-color: #0069d9;
+}
+
+.error-reason {
+  color: #dc3545;
+  font-size: 0.85em;
+  margin-left: 5px;
+}
+
+/* Error icon styles */
+.error-icon {
+  color: #dc3545;
+}
+
+/* Map error container styles */
+.map-error-container {
+  padding: 20px;
+  background-color: #fff8f8;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.map-error-container button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.map-error-container details {
+  margin-top: 15px;
+  text-align: left;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.map-error-container details pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-size: 0.9em;
+}
+
+/* Route marker styles */
+.route-marker {
+  background-color: #1e88e5;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.route-marker-start {
+  background-color: #43a047;
+}
+
+.route-marker-end {
+  background-color: #e53935;
+}
+
+.route-marker-number {
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 24px;
+}
+
+/* Team Assignment Button Styles */
+.map-popup-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.team-assignment-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.team-assignment-btn:hover {
+  background-color: #388e3c;
+}
+
+.appointment-list-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.appointment-list-header h4 {
+  margin: 0 0 10px 0;
+  padding: 0;
+  font-size: 16px;
+  color: #333;
+  border-bottom: none;
+}
+
+.appointment-search {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 30px 8px 30px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-input:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #6c757d;
+  margin: 0;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* Geocode accuracy styles */
+.geocode-accuracy {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.geocode-accuracy p {
+  margin: 0;
+}
+
+.geocode-accuracy.very_high {
+  background-color: rgba(0, 200, 83, 0.1);
+  border-left: 3px solid #00c853;
+}
+
+.geocode-accuracy.high {
+  background-color: rgba(100, 221, 23, 0.1);
+  border-left: 3px solid #64dd17;
+}
+
+.geocode-accuracy.medium {
+  background-color: rgba(255, 214, 0, 0.1);
+  border-left: 3px solid #ffd600;
+}
+
+.geocode-accuracy.low {
+  background-color: rgba(255, 145, 0, 0.1);
+  border-left: 3px solid #ff9100;
+}
+
+.geocode-accuracy.very_low {
+  background-color: rgba(255, 61, 0, 0.1);
+  border-left: 3px solid #ff3d00;
+}
+
+.geocode-accuracy.unknown {
+  background-color: rgba(117, 117, 117, 0.1);
+  border-left: 3px solid #757575;
+}
+
+/* Accuracy indicator for appointment list */
+.geocode-accuracy-indicator {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.accuracy-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.accuracy-dot.very_high {
+  background-color: #00c853;
+}
+
+.accuracy-dot.high {
+  background-color: #64dd17;
+}
+
+.accuracy-dot.medium {
+  background-color: #ffd600;
+}
+
+.accuracy-dot.low {
+  background-color: #ff9100;
+}
+
+.accuracy-dot.very_low {
+  background-color: #ff3d00;
+}
+
+.accuracy-dot.unknown {
+  background-color: #757575;
+}
+
+/* Subtle border color for list items based on accuracy */
+.appointment-list-panel li.accuracy-very_high {
+  border-left: 3px solid #00c853;
+}
+
+.appointment-list-panel li.accuracy-high {
+  border-left: 3px solid #64dd17;
+}
+
+.appointment-list-panel li.accuracy-medium {
+  border-left: 3px solid #ffd600;
+}
+
+.appointment-list-panel li.accuracy-low {
+  border-left: 3px solid #ff9100;
+}
+
+.appointment-list-panel li.accuracy-very_low {
+  border-left: 3px solid #ff3d00;
+}
+
+.appointment-list-panel li.accuracy-unknown {
+  border-left: 3px solid #757575;
+}

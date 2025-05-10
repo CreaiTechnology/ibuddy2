@@ -1,0 +1,26 @@
+/* Styling for platform selection */
+.platform-checkbox-group {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to next line */
+  gap: 1rem; /* Spacing between checkboxes */
+  padding-top: 0.5rem; 
+  padding-bottom: 0.5rem;
+}
+
+.platform-checkbox-item {
+  display: flex;
+  align-items: center;
+}
+
+.platform-checkbox-item input[type="checkbox"] {
+  margin-right: 0.5rem; /* Space between checkbox and label */
+  width: auto; /* Override default width if needed */
+  max-width: none; /* Override default max-width */
+}
+
+.platform-checkbox-item label {
+  margin-bottom: 0; /* Reset default margin from form-group */
+  font-weight: normal; /* Make label text normal weight */
+  color: #555;
+  cursor: pointer;
+} 

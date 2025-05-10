@@ -1,0 +1,226 @@
+/* DashboardPage.css */
+
+/* Basic CSS Variables */
+:root {
+  --card-bg: white;
+  --card-border-color: #e0e0e0;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --card-hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  --text-color-primary: #333;
+  --text-color-secondary: #555;
+  --primary-color: #007bff; /* Blue for primary actions/links */
+  --success-color: #28a745; /* Green for active status */
+  --success-bg-light: #e6f7e9;
+  --inactive-color: #6c757d; /* Gray for inactive status */
+  --inactive-bg-light: #f8f9fa;
+  --card-border-radius: 8px;
+  --card-padding: 1.5rem;
+  --grid-gap: 1.5rem;
+}
+
+.dashboard-container {
+  padding-top: 80px; /* Adjust if navbar height changes */
+  padding-bottom: 40px; /* More bottom padding */
+}
+
+.dashboard-title {
+  margin-bottom: 2.5rem; /* Increased space below title */
+  font-weight: 600; /* Slightly bolder title */
+  color: var(--text-color-primary);
+}
+
+/* Grid container for the cards */
+.agent-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Slightly larger min width */
+  gap: var(--grid-gap);
+}
+
+/* Base card styling (applied implicitly by AgentCard and explicitly to Platform Card) */
+.agent-card, .platform-api-card {
+  border: 1px solid var(--card-border-color);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  min-height: 250px; /* Adjusted min-height */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  position: relative; /* Needed for potential absolute positioning inside */
+}
+
+.agent-card:hover, .platform-api-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+/* Styling specific to Platform API card */
+.platform-api-card {
+  cursor: pointer;
+  /* Highlight color using variable */
+  border-left: 5px solid var(--primary-color); /* Use left border highlight */
+}
+
+.platform-api-card h3 {
+  color: var(--primary-color); /* Title color matches highlight */
+}
+
+.platform-api-card .card-link-indicator {
+  color: var(--primary-color);
+  font-weight: 500;
+  margin-top: auto; /* Push to bottom */
+  align-self: flex-start;
+  padding-top: 1rem; /* Space above indicator */
+}
+
+
+/* Shared card content styling */
+.agent-card h3, .platform-api-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: var(--text-color-primary);
+  /* Removed flex-grow, rely on container flex */
+}
+
+.agent-card p, .platform-api-card p {
+  /* Let description take available space */
+  flex-grow: 1;
+  margin-bottom: 1rem;
+  color: var(--text-color-secondary);
+  line-height: 1.5;
+}
+
+/* Icon and Title layout for cards */
+.card-icon-title {
+  display: flex;
+  align-items: center; /* Vertically center icon and title */
+  gap: 0.75rem; /* Space between icon and title */
+  margin-bottom: 0.75rem;
+}
+
+.card-icon {
+  color: var(--text-color-secondary); /* Default icon color */
+  flex-shrink: 0; /* Prevent icon shrinking */
+}
+
+/* Styles specifically for platform card icon */
+.platform-api-card .card-icon {
+    color: var(--primary-color); /* Match icon color to highlight */
+}
+
+
+/* Status Section (Assuming it's inside AgentCard) */
+.agent-card .status-section {
+  display: flex;
+  justify-content: space-between; /* Place label and toggle apart */
+  align-items: center;
+  margin-bottom: 1rem; /* Space below status */
+  margin-top: auto; /* Push status and button container to bottom */
+  padding-top: 1rem; /* Add padding above for separation */
+  border-top: 1px solid var(--card-border-color); /* Optional separator line */
+}
+
+.agent-card .status-label {
+    color: var(--text-color-secondary);
+    font-weight: 500;
+}
+
+
+/* Toggle Switch Styles (Assuming structure within AgentCard) */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 26px; /* Rounded sliders */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%; /* Rounded knob */
+}
+
+input:checked + .slider {
+  background-color: var(--success-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--success-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* Buttons inside cards (Assuming .btn class is used by AgentCard button) */
+.agent-card .btn {
+  margin-top: 1rem; /* Space above manage button if status is not shown */
+  align-self: flex-start;
+}
+
+/* Refined layout for header row in AgentCard (if toggle is next to title) */
+/* Assuming AgentCard structure: <Card><div className="card-header-row"><h3>...</h3><Toggle/></div><p>...</p>...</Card> */
+.agent-card .card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+} 
+
+/* 筛选控件样式 */
+.dashboard-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-input,
+.filter-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--card-border-color);
+  border-radius: var(--card-border-radius);
+  background-color: var(--card-bg);
+  color: var(--text-color-primary);
+}
+
+.filter-input {
+  flex: 1;
+  max-width: 300px;
+}
+
+.filter-select {
+  max-width: 200px;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+  border-color: var(--primary-color);
+} 

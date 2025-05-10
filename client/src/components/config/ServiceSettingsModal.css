@@ -1,0 +1,441 @@
+.service-settings-modal .modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+  color: #333;
+}
+
+.service-settings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.service-settings-table th,
+.service-settings-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  color: #333;
+}
+
+.service-settings-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.overlap-input {
+  width: 80px;
+  padding: 5px;
+  box-sizing: border-box;
+  color: #333;
+}
+
+/* Add some additional styling */
+.service-settings-modal {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 700px;
+  color: #333;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.close-button {
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 20px;
+  border-top: 1px solid #eee;
+  gap: 10px;
+}
+
+.cancel-button,
+.save-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+}
+
+.cancel-button {
+  color: #333; /* 取消按钮文字颜色 */
+}
+
+.save-button {
+  background-color: #4285f4;
+  color: white; /* 保存按钮文字颜色，已设为白色但确保它显示在蓝色背景上 */
+  border-color: #4285f4;
+}
+
+.save-button:hover {
+  background-color: #3367d6;
+}
+
+.save-button:disabled {
+  background-color: #a8c7fa;
+  border-color: #a8c7fa;
+  cursor: not-allowed;
+  color: white; /* 确保禁用状态下的文字颜色 */
+}
+
+.error-message {
+  color: #d93025;
+  margin: 10px 0;
+}
+
+.modal-body p {
+  color: #333; /* 普通段落文字颜色 */
+}
+
+/* 确保加载中文字颜色 */
+.modal-body p:not(.error-message) {
+  color: #333;
+}
+
+/* 确保表格为空时的提示文字颜色 */
+.modal-body p:last-child {
+  color: #333;
+}
+
+/* --- 新服务管理功能的样式 --- */
+
+/* 服务列表标题和添加按钮 */
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.services-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.create-button {
+  padding: 8px 16px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.create-button:hover {
+  background-color: #3367d6;
+}
+
+.create-button:disabled {
+  background-color: #a8c7fa;
+  cursor: not-allowed;
+}
+
+/* 服务表格容器 */
+.services-table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+/* 操作按钮 */
+.actions-cell {
+  white-space: nowrap;
+  text-align: center;
+}
+
+.edit-button,
+.delete-button {
+  padding: 4px 8px;
+  margin: 0 3px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.edit-button {
+  background-color: #fbbc05;
+  color: white;
+  border-color: #fbbc05;
+}
+
+.edit-button:hover {
+  background-color: #f9a825;
+}
+
+.delete-button {
+  background-color: #ea4335;
+  color: white;
+  border-color: #ea4335;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.edit-button:disabled,
+.delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 颜色指示器 */
+.color-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 服务表单样式 */
+.service-form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #333;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #d93025;
+}
+
+.form-group .error-text {
+  color: #d93025;
+  font-size: 0.85em;
+  margin-top: 4px;
+  display: block;
+}
+
+.form-group .help-text {
+  color: #5f6368;
+  font-size: 0.85em;
+  margin-top: 4px;
+  display: block;
+}
+
+.required {
+  color: #d93025;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 颜色选择器样式 */
+.color-picker {
+  margin-top: 8px;
+}
+
+.color-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.color-preset {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease;
+}
+
+.color-preset:hover {
+  transform: scale(1.1);
+}
+
+.color-preset.selected {
+  box-shadow: 0 0 0 2px #4285f4;
+}
+
+.custom-color-container {
+  margin-top: 10px;
+}
+
+.custom-color-button {
+  background-color: transparent;
+  border: 1px dashed #999;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: #333;
+  cursor: pointer;
+}
+
+.custom-color-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-color-input {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.color-preview {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 删除确认对话框 */
+.confirm-dialog {
+  text-align: center;
+  padding: 10px;
+}
+
+.confirm-dialog h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.confirm-dialog p {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.confirm-dialog .warning-text {
+  color: #d93025;
+  font-weight: 500;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* 重叠数变更提醒 */
+.overlap-changes-alert {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.overlap-changes-alert p {
+  margin: 0;
+  color: #333;
+}
+
+.save-overlap-button {
+  padding: 6px 12px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-overlap-button:hover {
+  background-color: #3367d6;
+}
+
+.save-overlap-button:disabled {
+  background-color: #a8c7fa;
+  cursor: not-allowed;
+}
+
+/* 加载状态 */
+.loading-text {
+  color: #5f6368;
+  text-align: center;
+  font-style: italic;
+}
+
+/* 无数据提示 */
+.no-data-message {
+  text-align: center;
+  color: #5f6368;
+  margin: 20px 0;
+}
+
+/* 表单容器 */
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-container h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+} 

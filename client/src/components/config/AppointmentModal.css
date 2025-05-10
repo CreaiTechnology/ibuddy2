@@ -1,0 +1,280 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input.error, select.error {
+  border-color: #f44336;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.form-actions button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.save-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #388e3c;
+}
+
+.cancel-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  margin-right: auto;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.time-display {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+}
+
+.time-display p {
+  margin: 0;
+  line-height: 1.5;
+  color: #555;
+}
+
+.time-display strong {
+  color: #333;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  background-color: #f8f9fa;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.btn-cancel {
+  background-color: #f8f9fa;
+  border-color: #ddd;
+  color: #6c757d;
+}
+
+.btn-cancel:hover {
+  background-color: #e9ecef;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+/* Make sure buttons look good on mobile */
+@media (max-width: 576px) {
+  .modal-content {
+    width: 95%;
+  }
+  
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+  
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+
+/* Add styles for the textarea */
+textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+}
+
+textarea.error {
+  border-color: #f44336;
+}
+
+/* Source select styling */
+select {
+  background-color: white;
+  height: 38px;
+}
+
+/* Source options styling */
+select option {
+  padding: 8px;
+}
+
+/* Styles for Address Fieldset */
+.address-fieldset {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.address-fieldset legend {
+  padding: 0 10px; /* Add some padding around the legend text */
+  font-weight: 500;
+  color: #333; /* Set a specific dark color */
+}
+
+/* Color indicators for sources */
+.source-option-walkin { color: #4caf50; }
+.source-option-whatsapp { color: #25D366; }
+.source-option-messenger { color: #0078FF; }
+.source-option-instagram { color: #E1306C; }
+
+/* Add a subtle separator for visual sections */
+.form-separator {
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+/* Make modal wider to fit more content */
+@media (min-width: 600px) {
+  .modal-content {
+    max-width: 550px;
+  }
+} 

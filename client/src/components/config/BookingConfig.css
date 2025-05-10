@@ -1,0 +1,1144 @@
+/* BookingConfig.css */
+
+.booking-config {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+.booking-config h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.booking-config p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px dashed #ccc;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 1rem;
+}
+
+.form-section h5 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1rem; 
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input[type="number"],
+.form-group select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  max-width: 250px;
+}
+
+/* --- Business Hours Specific Styles --- */
+.business-hours-group label:first-of-type {
+    margin-bottom: 0.75rem;
+}
+
+.business-hours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.business-hours-day {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 0.75rem;
+  background-color: #fff;
+}
+
+.business-hours-day .day-label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.business-hours-day .day-label input[type="checkbox"] {
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.business-hours-day .time-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.business-hours-day .time-inputs input[type="time"] {
+  padding: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  max-width: 100px;
+}
+
+.business-hours-day .time-inputs span {
+  color: #888;
+}
+
+.business-hours-day .closed-text {
+    display: block;
+    margin-top: 0.5rem;
+    color: #888;
+    font-style: italic;
+    text-align: center;
+}
+
+/* Styles for specific settings sections */
+.specific-settings .form-group label {
+    display: flex; 
+    align-items: center;
+    font-weight: normal;
+}
+
+.specific-settings .form-group input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Styles for elements within the services section */
+.services-list-container {
+   margin-bottom: 1.5rem;
+}
+
+.services-list {
+   list-style: none;
+   padding-left: 0;
+   margin: 0;
+   border: 1px solid #e0e0e0;
+   border-radius: 4px;
+   background-color: #fff;
+}
+
+.service-item {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0.75rem 1rem;
+   border-bottom: 1px solid #eee;
+   gap: 1rem;
+}
+
+.service-item:last-child {
+   border-bottom: none;
+}
+
+.service-details {
+   flex-grow: 1;
+}
+
+.service-name {
+   font-weight: 600;
+   color: #333;
+}
+
+.service-duration {
+   margin-left: 0.5rem;
+   color: #666;
+   font-size: 0.9em;
+}
+
+.service-actions {
+   display: flex;
+   gap: 0.5rem;
+   flex-shrink: 0;
+}
+
+.add-service-form {
+   margin-top: 1.5rem;
+   padding: 1rem;
+   border: 1px dashed #ccc;
+   border-radius: 4px;
+   background-color: #f8f8f8;
+}
+
+.add-service-form h6 {
+   margin-top: 0;
+   margin-bottom: 1rem;
+}
+
+.form-group-inline {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: flex-end;
+   gap: 1rem;
+}
+
+.form-group-inline .form-group {
+   flex: 1;
+   min-width: 150px;
+   margin-bottom: 0;
+}
+
+.form-group-inline .btn {
+   height: fit-content;
+}
+
+.form-group-inline input[type="text"],
+.form-group-inline input[type="number"] {
+   max-width: none;
+   width: 100%;
+}
+
+/* Agent type selector */
+.agent-selector {
+  margin-bottom: 15px;
+}
+
+.agent-selector select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-left: 10px;
+}
+
+.booking-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.booking-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Service list styles */
+.services-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.service-item:last-child {
+  border-bottom: none;
+}
+
+.service-name {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.service-duration {
+  color: #6c757d;
+}
+
+.service-actions button {
+  margin-left: 5px;
+}
+
+.add-service-form {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.form-group-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+/* Add styles for the event source label */
+.event-source {
+  font-size: 0.7rem;
+  padding: 1px 5px;
+  border-radius: 10px;
+  margin-left: 5px;
+  font-weight: bold;
+  display: inline-block;
+  color: white;
+}
+
+.event-source-walkin {
+  background-color: #4caf50;
+}
+
+.event-source-whatsapp {
+  background-color: #25D366;
+}
+
+.event-source-messenger {
+  background-color: #0078FF;
+}
+
+.event-source-instagram {
+  background-color: #E1306C;
+}
+
+/* Make custom events look better */
+.custom-event {
+  padding: 2px 4px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.event-title {
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-details {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* Refresh button styling */
+.refresh-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.refresh-button:hover {
+  background-color: #388e3c;
+}
+
+.refresh-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Error and loading styles */
+.error-message {
+  color: #f44336;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #ffebee;
+  border-radius: 4px;
+}
+
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* Calendar container */
+.calendar-container {
+  margin-top: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Header styles */
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.booking-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Source filter controls */
+.source-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.source-filter-button {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.source-filter-button.active {
+  border-color: #4caf50;
+  background-color: #e8f5e9;
+}
+
+.source-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.source-indicator-walkin { background-color: #4caf50; }
+.source-indicator-whatsapp { background-color: #25D366; }
+.source-indicator-messenger { background-color: #0078FF; }
+.source-indicator-instagram { background-color: #E1306C; }
+
+/* General container styling */
+.booking-config-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header styling */
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.booking-header h2 {
+  margin: 0;
+}
+
+.header-controls button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.header-controls button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.header-controls button:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+/* Filter buttons styling */
+.source-filters {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.source-filter-button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  display: flex; /* Align indicator and text */
+  align-items: center;
+  gap: 5px; /* Space between indicator and text */
+}
+
+.source-filter-button:hover {
+  background-color: #e2e6ea;
+}
+
+.source-filter-button.active {
+  background-color: #e0f7fa; /* Light blue for active */
+  border-color: #007bff;
+  font-weight: bold;
+}
+
+/* Source indicator dots */
+.source-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc; /* Default grey */
+}
+
+.source-indicator-walkin { background-color: #dc3545; } /* Red */
+.source-indicator-whatsapp { background-color: #25d366; } /* Green */
+.source-indicator-messenger { background-color: #0084ff; } /* Blue */
+.source-indicator-instagram { background-color: #e1306c; } /* Pink */
+/* No specific color for 'Other', uses default */
+
+/* Calendar container */
+.calendar-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+/* FullCalendar Customizations */
+.fc {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.fc .fc-button-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.fc .fc-col-header-cell {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.fc .fc-timegrid-slot {
+  height: 40px;
+}
+
+.fc .fc-timegrid-event {
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.fc-event-content {
+  padding: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc-event-title {
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.fc-event-service,
+.fc-event-phone {
+  font-size: 0.9em; /* Slightly smaller for secondary info */
+  margin-top: 2px;
+}
+
+/* Makes time column wider for better readability */
+.fc .fc-timegrid-axis-cushion {
+  min-width: 60px;
+}
+
+/* Highlight current time indicator */
+.fc .fc-timegrid-now-indicator-line {
+  border-color: #ff3860;
+  border-width: 2px;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: #ff3860;
+  border-width: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+  }
+
+  .fc .fc-toolbar-chunk {
+    margin-bottom: 10px;
+  }
+  
+  .fc .fc-timegrid-slot {
+    height: 30px;
+  }
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* BookingConfig.css - 用于预约系统的样式 */
+.booking-config-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.refresh-button {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.refresh-button:hover {
+  background-color: #e9ecef;
+}
+
+.refresh-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.calendar-wrapper {
+  flex: 1;
+  position: relative;
+  min-height: 600px;
+  padding: 16px;
+}
+
+.calendar-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.calendar-container.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.calendar-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 100;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.source-filters {
+  display: flex;
+  padding: 8px 24px;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.source-filter-button {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.source-filter-button.active {
+  background-color: #e2f6ff;
+  border-color: #4dabf7;
+  color: #1971c2;
+  font-weight: 500;
+}
+
+.source-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #adb5bd;
+}
+
+.source-indicator-walkin {
+  background-color: #20c997;
+}
+
+.source-indicator-whatsapp {
+  background-color: #40c057;
+}
+
+.source-indicator-messenger {
+  background-color: #339af0;
+}
+
+.source-indicator-instagram {
+  background-color: #e64980;
+}
+
+.error-message {
+  color: #e03131;
+  padding: 16px 24px;
+  font-size: 14px;
+  background-color: #fff5f5;
+  border-left: 4px solid #e03131;
+  margin: 16px 24px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+  color: #666;
+  padding: 32px;
+}
+
+.error {
+  color: #e03131;
+  padding: 32px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+/* FullCalendar 自定义样式 */
+.fc {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+/* 确保日历内容填充整个可用空间 */
+.fc-view-harness {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin: 0;
+  flex: 1;
+}
+
+/* 表头样式 */
+.fc .fc-toolbar {
+  margin-bottom: 16px !important;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 20px;
+  color: #212529;
+}
+
+/* 确保时间轴显示正常 */
+.fc .fc-timegrid-slot {
+  height: 40px; /* 增加时间槽高度 */
+  border-bottom: 1px solid #e9ecef !important;
+}
+
+.fc .fc-timegrid-slot-lane {
+  border-right: 1px solid #e9ecef !important;
+}
+
+/* 增强时间标签可见性 */
+.fc .fc-timegrid-slot-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+/* 强化当前时间指示器 */
+.fc .fc-timegrid-now-indicator-line {
+  border-color: #ff6b6b !important;
+  border-width: 2px !important;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: #ff6b6b !important;
+  border-width: 5px !important;
+}
+
+/* 增强周/日视图中的日期标签 */
+.fc .fc-col-header-cell {
+  padding: 10px 0;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e9ecef !important;
+}
+
+.fc .fc-col-header-cell-cushion {
+  font-weight: 600;
+  color: #000000 !important; /* Force black color with high priority */
+  text-decoration: none !important;
+  padding: 6px;
+}
+
+/* 调整事件显示样式 */
+.fc-event {
+  border-radius: 3px !important;
+  border: none !important;
+  padding: 2px 4px !important;
+  font-size: 13px !important;
+}
+
+.fc-event-main-custom {
+  padding: 1px 3px; /* Slightly reduce padding */
+  font-size: 0.78em; /* Slightly reduce font size */
+  line-height: 1.3; /* Adjust line height */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensure it fills the event container */
+}
+
+.fc-event-main-custom div {
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+/* Keep ellipsis for title specifically if desired */
+.fc-event-title {
+  font-weight: 600; 
+  white-space: nowrap; /* Keep title on one line with ellipsis */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Improve contrast for specific timeGrid elements if needed */
+/* Removed empty rule at line 897: .fc .fc-timegrid-slot-label {} */
+
+/* --- Specific View Text Color Adjustments --- */
+
+/* Month View Event Text Color */
+.fc-daygrid-event .fc-event-main-custom,
+.fc-daygrid-event .fc-event-main-custom .fc-event-time,
+.fc-daygrid-event .fc-event-main-custom .fc-event-title,
+.fc-daygrid-event .fc-event-main-custom .fc-event-service,
+.fc-daygrid-event .fc-event-main-custom .fc-event-phone {
+  color: #343a40; /* Dark grey for better contrast on light backgrounds */
+}
+
+/* List View Event Text Color - UPDATED SELECTORS */
+.fc-list-table .fc-list-event-title,
+.fc-list-table .fc-list-event-title .fc-event-main-custom div {
+  color: #000000 !important; /* Force black for title cell content */
+}
+
+/* 确保日历时间格子高度足够 */
+.fc .fc-timegrid-slot {
+  height: 2.5em; /* Example: Increase height */
+}
+
+/* 特别短的预约也能显示完整信息 */
+.fc-timegrid-event.fc-event-short .fc-event-main-custom {
+  min-height: 36px !important; /* 短事件也有最小高度 */
+}
+
+/* 事件内容容器确保不超出 */
+.fc-event-main {
+  overflow: visible !important; /* 允许内容在悬停时超出容器边界 */
+}
+
+/* 增加事件之间间距，避免重叠 */
+.fc-timegrid-event-harness {
+  margin-top: 1px !important;
+  margin-bottom: 1px !important;
+}
+
+/* 调整业务时间背景色透明度 */
+.fc .fc-non-business {
+  background: #f8f8f8; /* Example: Slightly different background for non-business hours */
+}
+
+.fc .fc-timegrid-col.fc-day-today {
+  background-color: var(--fc-today-bg-color); /* Make sure today column highlight is subtle */
+}
+
+/* 鼠标悬停时的事件高亮 */
+.fc-event:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10 !important;
+}
+
+/* 业务时间突出显示 */
+.fc .fc-businessHours {
+  background-color: rgba(241, 243, 245, 0.3);
+}
+
+/* 解决时间轴显示问题的额外样式 */
+.fc-time-grid-container {
+  height: auto !important;
+}
+
+.fc-timegrid-slots table {
+  width: 100% !important;
+}
+
+.fc .fc-timegrid-slot {
+  height: 48px !important;
+  border-bottom: 1px solid #e9ecef !important;
+}
+
+.fc .fc-timegrid-slot-lane {
+  border-right: 1px solid #e9ecef !important;
+  background-color: white;
+}
+
+.fc .fc-timegrid-slot-label {
+  vertical-align: middle !important;
+  padding: 4px !important;
+  font-weight: 500 !important;
+  color: #495057 !important;
+}
+
+.fc .fc-timegrid-axis {
+  padding: 10px !important;
+  background-color: #f8f9fa !important;
+  width: 70px !important;
+  font-weight: 500 !important;
+}
+
+.fc .fc-timegrid-slot-label-frame {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+}
+
+/* 确保日历内容区域正确显示 */
+.calendar-wrapper .fc-view-harness {
+  min-height: 600px !important;
+}
+
+.fc-view-harness-active {
+  height: auto !important;
+  min-height: 600px !important;
+}
+
+.fc-timegrid-body {
+  width: 100% !important;
+}
+
+.fc-scrollgrid-sync-inner {
+  min-height: 40px !important;
+}
+
+/* Styles for day numbers within the month grid cells */
+.fc .fc-daygrid-day-number {
+  color: #000000 !important; /* Force black color for grid day numbers */
+  text-decoration: none !important; /* Ensure no underline */
+  padding: 4px; /* Add some padding */
+}
+
+/* List View - Event Time Color */
+.fc .fc-list-event-time {
+  color: #000000 !important; /* Force black for event time */
+}
+
+/* List View - Day/Date Text Color */
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+  color: #000000 !important; /* Force black for day/date text */
+  text-decoration: none; /* Remove potential underline from links */
+}
+
+/* 添加联系方式样式 */
+.fc-event-phone {
+  font-size: 0.9em;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  color: #666;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 3px;
+  padding: 1px 3px;
+}
+
+.phone-icon {
+  margin-right: 4px;
+  font-size: 1em;
+}
+
+/* 增强事件样式，为联系方式腾出更多空间 */
+.fc-event-main-custom {
+  padding: 1px 3px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 60px; /* 确保有足够的高度显示所有内容 */
+}
+
+/* 调整事件内部间距，确保所有内容都能显示 */
+.fc-timegrid-event .fc-event-main {
+  padding: 1px 2px;
+}
+
+/* 在小尺寸事件中优先显示联系方式 */
+@media (max-height: 600px) {
+  .fc-timegrid-event.fc-event-short .fc-event-main-custom {
+    min-height: auto; /* 允许更小的高度 */
+  }
+  
+  .fc-timegrid-event.fc-event-short .fc-event-service {
+    display: none; /* 在空间不足时隐藏服务名称 */
+  }
+  
+  .fc-timegrid-event.fc-event-short .fc-event-phone {
+    margin-top: 1px; /* 减少顶部边距 */
+  }
+}
+
+/* 统一按钮样式 (包括 Link 转换的按钮) */
+.header-controls .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px; /* 稍微调整内边距 */
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none; /* 移除链接下划线 */
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+/* 统计链接按钮样式 */
+.stats-link-button {
+  /* background-color: #17a2b8; */ /* 使用 Bootstrap info 颜色 */
+  /* border-color: #17a2b8; */
+  /* color: white; */
+}
+
+.stats-link-button:hover {
+  /* background-color: #138496; */
+  /* border-color: #117a8b; */
+}
+
+/* 服务设置按钮样式 (保持不变或根据需要调整) */
+.service-settings-button {
+  /* background-color: #6c757d; */ /* 使用 Bootstrap secondary 颜色 */
+  /* border-color: #6c757d; */
+  /* color: white; */
+}
+
+.service-settings-button:hover {
+  /* background-color: #5a6268; */
+  /* border-color: #545b62; */
+}
+
+/* 刷新按钮样式 (保持不变或根据需要调整) */
+.refresh-button {
+  /* background-color: #007bff; */ /* 使用 Bootstrap primary 颜色 */
+  /* border-color: #007bff; */
+  /* color: white; */
+}
+
+.refresh-button:hover {
+  /* background-color: #0056b3; */
+  /* border-color: #0056b3; */
+}
+
+/* 禁用状态样式 */
+.header-controls .btn:disabled {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+  color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* 统计切换按钮特定样式 (如果需要) */
+.stats-toggle-button {
+  /* 可以添加特定样式，例如不同的背景色或边框 */
+  /* 示例： */
+  /* background-color: #6f42c1; */ /* 紫色示例 */
+  /* border-color: #6f42c1; */
+}
+
+.stats-toggle-button:hover {
+  /* background-color: #5a32a3; */
+  /* border-color: #5a32a3; */
+}
+
+/* 统计区域容器样式 */
+.stats-section-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fdfdff; /* 非常浅的背景色 */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); 
+}

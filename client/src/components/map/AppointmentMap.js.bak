@@ -1,0 +1,981 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline, Tooltip } from 'react-leaflet';
+import L from 'leaflet';
+import { FaMapMarkerAlt, FaCalendarAlt, FaUsers } from 'react-icons/fa';
+import moment from 'moment';
+import './AppointmentMap.css';
+import 'leaflet-routing-machine';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import TeamAssignmentModal from './TeamAssignmentModal';
+import { toast } from 'react-toastify';
+
+// --- Fix Leaflet's default icon path --- 
+// Import images directly
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+
+// Merge Leaflet's default options with the correct paths
+// Do this OUTSIDE the component to ensure it's configured before rendering
+delete L.Icon.Default.prototype._getIconUrl; // Delete the old way of getting icon URLs
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: iconRetinaUrl,
+  iconUrl: iconUrl,
+  shadowUrl: shadowUrl,
+});
+// ---------------------------------------
+
+// --- Direct Nominatim Geocoding Implementation ---
+// 直接使用Nominatim进行地理编码，不需要API密钥
+const geocodeAddressDirectly = async (appointment) => {
+  const addressData = appointment.extendedProps?.address;
+  const appointmentIdForLog = appointment.id || appointment.extendedProps?.service_id_old_uuid || 'Unknown ID';
+  console.log(`[Geocoding] Processing address data for ID ${appointmentIdForLog}:`, JSON.stringify(addressData));
+
+  if (!addressData || !addressData.line1) { 
+    console.warn(`Skipping geocoding for appointment ${appointmentIdForLog}: Missing address line1 in extendedProps`);
+    return { ...appointment, coordinates: null, formattedAddress: 'Address information incomplete' };
+  }
+
+  // 预处理和清理地址信息
+  const cleanAddress = preprocessMalaysianAddress(addressData);
+  
+  // 构建完整地址字符串
+  const fullAddress = buildFormattedAddress(cleanAddress);
+  
+  if (!fullAddress) { 
+      console.warn(`Skipping geocoding for appointment ${appointmentIdForLog}: Constructed address is empty`);
+      return { ...appointment, coordinates: null, formattedAddress: 'Address information incomplete' };
+  }
+
+  // 直接调用Nominatim API（不需要API密钥）
+  const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}&limit=1`;
+  
+  console.log(`[Direct Geocoding] Calling Nominatim for address: ${fullAddress} (ID: ${appointmentIdForLog})`);
+  
+  try {
+    // 添加重试逻辑
+    const MAX_RETRIES = 2;
+    let retries = 0;
+    let lastError = null;
+    
+    while (retries <= MAX_RETRIES) {
+      try {
+        // 使用 fetch 直接调用Nominatim API
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+        
+        const response = await fetch(nominatimUrl, {
+          signal: controller.signal,
+          headers: {
+            'Accept': 'application/json',
+            // Nominatim要求设置User-Agent或Referer
+            'User-Agent': 'iBuddy2AppointmentScheduler/1.0',
+            'Referer': 'https://ibuddy2scheduler.app/'
+          }
+        });
+        
+        clearTimeout(timeoutId); // 清除超时
+        
+        // 检查响应状态
+        if (!response.ok) {
+          const status = response.status;
+          let errorBody = '';
+          try { errorBody = await response.text(); } catch (e) { /* ignore */ }
+          console.error(`Nominatim request failed with status: ${status}. Body: ${errorBody.substring(0, 200)}`);
+          
+          if (status === 429) {
+            lastError = new Error(`Nominatim frequency limit (429)`);
+          } else if (status >= 500) {
+            lastError = new Error(`Nominatim server error (${status})`);
+          } else {
+            lastError = new Error(`Nominatim request failed (${status}): ${response.statusText}`);
+          }
+          throw lastError;
+        }
+
+        // 解析JSON
+        let data;
+        try {
+          data = await response.json();
+        } catch (jsonError) {
+          console.error(`Failed to parse JSON from Nominatim for address: ${fullAddress}`, jsonError);
+          lastError = jsonError;
+          throw new Error(`JSON parsing error: ${jsonError.message}`);
+        }
+
+        // 验证数据结构
+        if (!Array.isArray(data)) {
+          console.error(`Expected array response but got: ${typeof data}`, data);
+          lastError = new Error(`Format error: Expected array but received ${typeof data}`);
+          throw lastError;
+        }
+        
+        // 检查结果
+        if (data.length > 0) {
+          const result = data[0];
+          const { lat, lon } = result;
+          console.log(`Nominatim geocoded: ${fullAddress} -> [${lat}, ${lon}] (ID: ${appointmentIdForLog})`);
+          
+          // 确保坐标为数字
+          const latitude = parseFloat(lat);
+          const longitude = parseFloat(lon);
+          
+          if (isNaN(latitude) || isNaN(longitude)) {
+            console.error(`Invalid coordinates received: lat=${lat}, lon=${lon}`);
+            lastError = new Error(`Invalid coordinates: lat=${lat}, lon=${lon}`);
+            throw lastError;
+          }
+          
+          return {
+            ...appointment, 
+            coordinates: { lat: latitude, lng: longitude },
+            formattedAddress: result.display_name || fullAddress
+          };
+        } else {
+          console.warn(`Nominatim returned no results for: ${fullAddress} (ID: ${appointmentIdForLog})`);
+          
+          // 尝试备用地址格式
+          if (retries === MAX_RETRIES - 1) {
+            const fallbackAddress = createFallbackAddress(cleanAddress);
+            if (fallbackAddress && fallbackAddress !== fullAddress) {
+              console.log(`[Geocoding] Trying fallback address format: ${fallbackAddress}`);
+              const fallbackUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fallbackAddress)}&limit=1`;
+              
+              const fallbackResponse = await fetch(fallbackUrl, {
+                headers: {
+                  'Accept': 'application/json',
+                  'User-Agent': 'iBuddy2AppointmentScheduler/1.0',
+                  'Referer': 'https://ibuddy2scheduler.app/'
+                }
+              });
+              
+              if (fallbackResponse.ok) {
+                const fallbackData = await fallbackResponse.json();
+                if (Array.isArray(fallbackData) && fallbackData.length > 0) {
+                  const result = fallbackData[0];
+                  const latitude = parseFloat(result.lat);
+                  const longitude = parseFloat(result.lon);
+                  
+                  console.log(`[Geocoding] Fallback address succeeded: ${fallbackAddress} -> [${latitude}, ${longitude}]`);
+                  
+                  return {
+                    ...appointment,
+                    coordinates: { lat: latitude, lng: longitude },
+                    formattedAddress: result.display_name || fallbackAddress,
+                    usedFallback: true
+                  };
+                }
+              }
+            }
+          }
+          
+          return { 
+            ...appointment, 
+            coordinates: null, 
+            formattedAddress: 'Address not found',
+            geocodeError: 'No search results'
+          };
+        }
+
+      } catch (error) {
+        retries++;
+        lastError = error;
+        
+        // 判断是否需要继续重试
+        const isNetworkError = 
+          error.name === 'AbortError' || 
+          error.message.includes('network') ||
+          error.message.includes('connection') ||
+          error.message.includes('timed out');
+          
+        if (isNetworkError && retries <= MAX_RETRIES) {
+          console.log(`Network error, retrying geocoding (${retries}/${MAX_RETRIES}): ${fullAddress}`);
+          const delay = Math.min(1000 * retries, 3000); // 指数退避，最多3秒
+          await new Promise(resolve => setTimeout(resolve, delay));
+        } else if (retries <= MAX_RETRIES) {
+          console.log(`Retrying geocoding (${retries}/${MAX_RETRIES}): ${fullAddress}`);
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        } else {
+          break; // 达到最大重试次数，退出循环
+        }
+      }
+    }
+
+    // 重试全部失败
+    console.error(`All geocoding attempts failed: ${fullAddress} (ID: ${appointmentIdForLog})`, lastError);
+    return { 
+      ...appointment, 
+      coordinates: null, 
+      formattedAddress: `Geocoding failed: ${lastError?.message || 'Unknown error'}`,
+      geocodeError: lastError?.message || 'Unknown error'
+    };
+
+  } catch (error) {
+    console.error(`Geocoding main loop error: ${fullAddress} (ID: ${appointmentIdForLog})`, error);
+    return { 
+      ...appointment, 
+      coordinates: null, 
+      formattedAddress: `System error: ${error.message || 'Unknown'}`,
+      geocodeError: error.message
+    };
+  }
+};
+
+// 辅助函数：预处理马来西亚地址
+const preprocessMalaysianAddress = (addressData) => {
+  // 创建干净的副本
+  const cleanAddress = { ...addressData };
+  
+  // 处理城市字段包含完整地址的情况（避免重复）
+  if (cleanAddress.city && 
+      cleanAddress.line1 && 
+      cleanAddress.city.includes(cleanAddress.line1)) {
+    // 如果城市包含了完整地址，移除重复的信息
+    cleanAddress.city = extractCityName(cleanAddress.city);
+  } 
+  
+  // 处理城市字段实际是地址复制的情况
+  if (cleanAddress.city && cleanAddress.city.includes(',') && 
+      (cleanAddress.city.includes('Jalan') || cleanAddress.city.toLowerCase().includes('jln'))) {
+    cleanAddress.city = extractCityName(cleanAddress.city);
+  }
+  
+  // 确保国家字段存在
+  if (!cleanAddress.country) {
+    cleanAddress.country = 'Malaysia';
+  }
+  
+  return cleanAddress;
+};
+
+// 辅助函数：从复合地址中提取城市名称
+const extractCityName = (address) => {
+  // 尝试提取常见的马来西亚城市
+  const commonCities = [
+    'Kuala Lumpur', 'Petaling Jaya', 'Shah Alam', 'Klang', 'Subang Jaya',
+    'Johor Bahru', 'Georgetown', 'Ipoh', 'Melaka', 'Kota Kinabalu', 
+    'Kuching', 'Banting', 'Jenjarom', 'Selangor'
+  ];
+  
+  for (const city of commonCities) {
+    if (address.includes(city)) {
+      return city;
+    }
+  }
+  
+  // 尝试从邮政编码提取城市 (马来西亚邮政编码是5位数字)
+  const postalCodeMatch = address.match(/\b\d{5}\b/);
+  if (postalCodeMatch) {
+    // 尝试提取紧跟邮政编码之后的单词
+    const afterPostalIndex = address.indexOf(postalCodeMatch[0]) + postalCodeMatch[0].length;
+    const afterPostal = address.substring(afterPostalIndex).trim();
+    
+    if (afterPostal.startsWith(',')) {
+      const cityPart = afterPostal.substring(1).trim().split(',')[0];
+      if (cityPart && cityPart.length < 20) { // 避免完整地址
+        return cityPart;
+      }
+    }
+  }
+  
+  // 如果无法提取，返回地址的最后一部分（通常是城市/州）
+  const parts = address.split(',');
+  if (parts.length > 1) {
+    // 使用倒数第二个部分（最后一个可能是国家）
+    const cityCandidate = parts[parts.length - 2].trim();
+    if (cityCandidate.length < 25) {
+      return cityCandidate;
+    }
+  }
+  
+  // 备用：返回第一个10个字符以内的部分
+  if (address.length <= 15) {
+    return address;
+  }
+  
+  return ''; // 无法提取
+};
+
+// 辅助函数：构建格式化的地址字符串
+const buildFormattedAddress = (addressData) => {
+  const { line1, city, postalCode, country } = addressData;
+  
+  // 移除空字段并组合地址
+  const addressParts = [];
+  
+  if (line1) addressParts.push(line1);
+  
+  // 组合城市和邮政编码
+  if (city && postalCode) {
+    // 避免邮政编码重复出现在多个地方
+    if (!line1.includes(postalCode)) {
+      addressParts.push(`${city}, ${postalCode}`);
+    } else {
+      addressParts.push(city);
+    }
+  } else {
+    if (city) addressParts.push(city);
+    if (postalCode && !line1.includes(postalCode)) addressParts.push(postalCode);
+  }
+  
+  if (country) addressParts.push(country);
+  
+  // 过滤并组合
+  return addressParts.filter(part => part && part.trim()).join(', ');
+};
+
+// 辅助函数：创建备用地址格式
+const createFallbackAddress = (addressData) => {
+  // 备用地址策略1：只使用邮政编码、城市和国家
+  if (addressData.postalCode && addressData.city) {
+    return `${addressData.postalCode} ${addressData.city}, ${addressData.country || 'Malaysia'}`;
+  }
+  
+  // 备用地址策略2：使用更简单的地址格式
+  if (addressData.line1) {
+    const simplifiedAddress = addressData.line1.split(',')[0]; // 只取第一部分
+    return `${simplifiedAddress}, ${addressData.country || 'Malaysia'}`;
+  }
+  
+  // 备用地址策略3：如果有地址中的关键街道/路名
+  if (addressData.line1) {
+    // 尝试提取关键道路名称（Jalan/Jln，常见于马来西亚地址）
+    const jalaMatch = addressData.line1.match(/\b(?:jalan|jln)\s+[\w\s]+/i);
+    if (jalaMatch) {
+      return `${jalaMatch[0]}, ${addressData.country || 'Malaysia'}`;
+    }
+  }
+  
+  return null; // 无法创建备用地址
+};
+
+// 修改批量处理函数使用新的直接地理编码方法和Nominatim限制
+const batchGeocode = async (appointments, batchSize = 1, delayBetweenBatches = 1100) => {
+  console.log(`[Batch Geocoding] Starting to process ${appointments.length} appointments, batch size: ${batchSize}`);
+  const results = [];
+  
+  // 按批次处理
+  for (let i = 0; i < appointments.length; i += batchSize) {
+    const batch = appointments.slice(i, i + batchSize);
+    console.log(`[Batch Geocoding] Processing batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(appointments.length/batchSize)}, containing ${batch.length} addresses`);
+    
+    // 并行处理当前批次
+    const batchResults = await Promise.all(batch.map(geocodeAddressDirectly));
+    results.push(...batchResults);
+    
+    // 如果还有更多批次，等待一段时间再继续 (Nominatim限制是1秒1次)
+    if (i + batchSize < appointments.length) {
+      console.log(`[Batch Geocoding] Waiting ${delayBetweenBatches}ms before processing next batch...`);
+      await new Promise(resolve => setTimeout(resolve, delayBetweenBatches));
+    }
+  }
+  
+  console.log(`[Batch Geocoding] All batches processed, successfully geocoded: ${results.filter(a => a.coordinates).length}/${results.length}`);
+  return results;
+};
+
+// Custom component to update map view when appointments change
+const MapUpdater = ({ appointments }) => {
+  const map = useMap();
+  useEffect(() => {
+    const validAppointments = appointments.filter(app => app.coordinates);
+    if (validAppointments.length > 0) {
+      const latitudes = validAppointments.map(app => app.coordinates.lat);
+      const longitudes = validAppointments.map(app => app.coordinates.lng);
+      
+      // Create bounds
+      const bounds = L.latLngBounds(
+        L.latLng(Math.min(...latitudes), Math.min(...longitudes)),
+        L.latLng(Math.max(...latitudes), Math.max(...longitudes))
+      );
+      
+      if (bounds.isValid()) {
+          // Fit map to bounds with padding
+          map.fitBounds(bounds, { padding: [50, 50] }); 
+      } else if (validAppointments.length === 1) {
+          // Center on the single point if bounds are not valid (e.g., single point)
+          map.setView(validAppointments[0].coordinates, 13); // Zoom level 13 for single point
+      }
+    }
+  }, [appointments, map]);
+  return null;
+};
+
+// --- New: OSRM Route Planning Implementation ---
+const calculateRoute = async (waypoints) => {
+  // Filter waypoints to only include those with valid coordinates
+  const validWaypoints = waypoints.filter(wp => wp.coordinates && wp.coordinates.lat && wp.coordinates.lng);
+  
+  if (validWaypoints.length < 2) {
+    console.warn('Route planning requires at least two valid address points');
+    return { success: false, error: 'Route planning requires at least two valid address points' };
+  }
+  
+  try {
+    // Build OSRM API URL
+    const coordinates = validWaypoints.map(wp => 
+      `${wp.coordinates.lng},${wp.coordinates.lat}`
+    ).join(';');
+    
+    // Using OSRM Demo Server - for production use, consider using a dedicated server or service
+    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordinates}?overview=full&geometries=geojson`;
+    
+    console.log('[Route Planning] Calling OSRM API with coordinates:', coordinates);
+    
+    const response = await fetch(osrmUrl, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Route planning request failed: ${response.status} ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.routes || data.routes.length === 0) {
+      throw new Error('No feasible route found');
+    }
+    
+    // Extract route details
+    const route = data.routes[0];
+    const { distance, duration, geometry } = route;
+    
+    // Format distance and duration
+    const formattedDistance = (distance / 1000).toFixed(1); // km
+    const formattedDuration = Math.round(duration / 60); // minutes
+    
+    console.log(`[Route Planning] Route calculated: ${formattedDistance}km, ${formattedDuration}min`);
+    
+    return {
+      success: true,
+      route: {
+        distance: formattedDistance,
+        duration: formattedDuration,
+        coordinates: geometry.coordinates.map(coord => ({ lat: coord[1], lng: coord[0] })), // Convert to Leaflet format
+        waypoints: validWaypoints
+      }
+    };
+  } catch (error) {
+    console.error('[Route Planning] Error calculating route:', error);
+    return { success: false, error: error.message || 'Route calculation failed' };
+  }
+};
+
+// Helper function to optimize waypoints for better route
+const optimizeWaypoints = async (waypoints, startPointIndex = 0) => {
+  // This is a simple implementation - for a real TSP solver, consider using dedicated services
+  if (waypoints.length <= 2) {
+    return { success: true, optimizedWaypoints: waypoints };
+  }
+  
+  try {
+    // Ensure startPointIndex is valid
+    startPointIndex = Math.min(Math.max(0, startPointIndex), waypoints.length - 1);
+    
+    // Start with the specified point
+    const startPoint = waypoints[startPointIndex];
+    const remainingPoints = [...waypoints.slice(0, startPointIndex), ...waypoints.slice(startPointIndex + 1)];
+    const optimizedRoute = [startPoint];
+    
+    let currentPoint = startPoint;
+    
+    // Simple nearest neighbor approach
+    while (remainingPoints.length > 0) {
+      // Find the nearest unvisited point
+      let minDistance = Infinity;
+      let nearestIndex = -1;
+      
+      for (let i = 0; i < remainingPoints.length; i++) {
+        const point = remainingPoints[i];
+        if (!point.coordinates) continue;
+        
+        // Calculate Haversine distance (straight-line distance)
+        const distance = calculateHaversineDistance(
+          currentPoint.coordinates.lat, 
+          currentPoint.coordinates.lng,
+          point.coordinates.lat,
+          point.coordinates.lng
+        );
+        
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestIndex = i;
+        }
+      }
+      
+      // If no valid next point found, break
+      if (nearestIndex === -1) break;
+      
+      // Add the nearest point to optimized route
+      currentPoint = remainingPoints[nearestIndex];
+      optimizedRoute.push(currentPoint);
+      
+      // Remove from remaining points
+      remainingPoints.splice(nearestIndex, 1);
+    }
+    
+    // Add any remaining points that couldn't be processed
+    optimizedRoute.push(...remainingPoints);
+    
+    return { 
+      success: true, 
+      optimizedWaypoints: optimizedRoute 
+    };
+  } catch (error) {
+    console.error('[Route Optimization] Error optimizing waypoints:', error);
+    return { success: false, error: error.message, optimizedWaypoints: waypoints };
+  }
+};
+
+// Helper function to calculate Haversine distance between coordinates
+const calculateHaversineDistance = (lat1, lon1, lat2, lon2) => {
+  const toRad = x => (x * Math.PI) / 180;
+  const R = 6371; // Earth radius in km
+  
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c; // Distance in km
+};
+
+const AppointmentMap = ({ appointments, onAppointmentSelect }) => {
+  const [geocodedAppointments, setGeocodedAppointments] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null); // Removed
+  // const [geocodeStats, setGeocodeStats] = useState({ total: 0, success: 0, failed: 0, retryCount: 0 }); // Removed
+  // Routing state
+  const [showRoute, setShowRoute] = useState(false);
+  const [routeData, setRouteData] = useState(null);
+  const [routeLoading, setRouteLoading] = useState(false);
+  const [routeError, setRouteError] = useState(null);
+  const [optimizeRoute, setOptimizeRoute] = useState(true);
+  
+  // Team assignment state
+  const [showTeamAssignmentModal, setShowTeamAssignmentModal] = useState(false);
+  const [appointmentForTeamAssignment, setAppointmentForTeamAssignment] = useState(null);
+
+  const processAppointments = useCallback(async () => {
+    if (!appointments?.length) {
+      setGeocodedAppointments([]);
+      setLoading(false); // Ensure loading stops
+      return;
+    }
+
+    setLoading(true);
+    // setError(null); // Removed
+    console.log(`Processing ${appointments.length} appointments for geocoding...`);
+    
+    try {
+      const results = await batchGeocode(appointments, 1, 1100);
+      setGeocodedAppointments(results);
+      
+      const successCount = results.filter(a => a.coordinates).length;
+      const failCount = results.filter(a => !a.coordinates).length;
+      console.log(`Geocoding completed: Success=${successCount}, Fail=${failCount}, Total=${results.length}`);
+      // setGeocodeStats({ total: results.length, success: successCount, failed: failCount, retryCount: 0 }); // Removed
+      
+    } catch (error) {
+      console.error('Geocoding processing error:', error);
+      // setError(error.message || 'Geocoding system error'); // Removed
+      setGeocodedAppointments(appointments.map(app => ({ ...app, coordinates: null, formattedAddress: 'Geocoding system error', geocodeError: error.message })));
+    } finally {
+      setLoading(false);
+    }
+  }, [appointments]);
+
+  // Process appointments to add coordinates
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    processAppointments();
+  }, [appointments, processAppointments]);
+
+  // Handle marker click
+  const handleMarkerClick = (appointment) => {
+    setSelectedAppointment(appointment);
+    if (onAppointmentSelect) {
+      onAppointmentSelect(appointment);
+    }
+  };
+  
+  // New function to open team assignment modal
+  const handleOpenTeamAssignment = (appointment, e) => {
+    // Stop event propagation to prevent popup from closing
+    if (e) {
+      e.stopPropagation();
+    }
+    setAppointmentForTeamAssignment(appointment);
+    setShowTeamAssignmentModal(true);
+  };
+  
+  // Handle successful team assignment
+  const handleTeamAssigned = (result) => {
+    // Update local state to reflect the change without a full reload
+    setGeocodedAppointments(prevAppointments => 
+      prevAppointments.map(appointment => {
+        if (appointment.id === result.appointmentId) {
+          // Create a copy of the appointment with updated team info
+          return {
+            ...appointment,
+            extendedProps: {
+              ...appointment.extendedProps,
+              teamId: result.teamId,
+              teamName: result.teamName
+            }
+          };
+        }
+        return appointment;
+      })
+    );
+    
+    // Update the selectedAppointment if it was the one updated
+    if (selectedAppointment && selectedAppointment.id === result.appointmentId) {
+      setSelectedAppointment({
+        ...selectedAppointment,
+        extendedProps: {
+          ...selectedAppointment.extendedProps,
+          teamId: result.teamId,
+          teamName: result.teamName
+        }
+      });
+    }
+    
+    // Show confirmation toast
+    toast.success(result.teamId 
+      ? `Assigned to team: ${result.teamName}` 
+      : 'Team unassigned');
+  };
+
+  // New function to handle route calculation
+  const handleCalculateRoute = async () => {
+    setRouteLoading(true);
+    setRouteError(null);
+    setRouteData(null);
+    
+    try {
+      // Filter appointments with valid coordinates
+      const validAppointments = geocodedAppointments.filter(app => 
+        app.coordinates && app.coordinates.lat && app.coordinates.lng
+      );
+      
+      if (validAppointments.length < 2) {
+        throw new Error('At least two valid address points are required to plan a route');
+      }
+      
+      // Optimize waypoints if enabled
+      let waypointsToUse = validAppointments;
+      
+      if (optimizeRoute && validAppointments.length > 2) {
+        const { success, optimizedWaypoints, error } = await optimizeWaypoints(validAppointments);
+        
+        if (!success) {
+          console.warn('[Route] Optimization failed, using original order:', error);
+        } else {
+          waypointsToUse = optimizedWaypoints;
+          console.log('[Route] Using optimized waypoints:', optimizedWaypoints.map(wp => wp.formattedAddress));
+        }
+      }
+      
+      // Calculate route
+      const result = await calculateRoute(waypointsToUse);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Route calculation failed');
+      }
+      
+      // Update state with route data
+      setRouteData(result.route);
+      setShowRoute(true);
+      console.log('[Route] Route calculation successful:', result.route);
+      
+    } catch (error) {
+      console.error('[Route] Error calculating route:', error);
+      setRouteError(error.message || 'Route planning failed');
+      setShowRoute(false);
+    } finally {
+      setRouteLoading(false);
+    }
+  };
+  
+  // New function to clear route
+  const handleClearRoute = () => {
+    setShowRoute(false);
+    setRouteData(null);
+    setRouteError(null);
+  };
+
+  return (
+    <div className="appointment-map-container">
+      <div className="map-header">
+        <h3>Appointment Map View</h3>
+        
+        {/* Add Route Planning UI */}
+        <div className="map-actions">
+          <div className="optimize-route-toggle">
+            <input
+              type="checkbox"
+              id="optimize-route"
+              checked={optimizeRoute}
+              onChange={() => setOptimizeRoute(!optimizeRoute)}
+            />
+            <label htmlFor="optimize-route">Optimize Route</label>
+          </div>
+          
+          <button 
+            className="route-button"
+            onClick={handleCalculateRoute}
+            disabled={routeLoading || geocodedAppointments.filter(a => a.coordinates).length < 2}
+          >
+            {routeLoading ? 'Calculating...' : 'Plan Route'}
+          </button>
+          
+          {showRoute && (
+            <button 
+              className="clear-button"
+              onClick={handleClearRoute}
+            >
+              Clear Route
+            </button>
+          )}
+        </div>
+      </div>
+      
+      {/* Display route error if any */}
+      {routeError && (
+        <div className="route-error">
+          <strong>Route Planning Error:</strong> {routeError}
+        </div>
+      )}
+      
+      {/* Display route info */}
+      {showRoute && routeData && (
+        <div className="route-info-banner">
+          <div className="route-stats">
+            <span className="route-distance">
+              Total Distance: <strong>{routeData.distance} km</strong>
+            </span>
+            <span className="route-duration">
+              Estimated Time: <strong>{routeData.duration} minutes</strong>
+            </span>
+            <span className="route-stops">
+              Stops: <strong>{routeData.waypoints.length}</strong>
+            </span>
+          </div>
+        </div>
+      )}
+      
+      <div className="map-content">
+        <div className="appointment-list">
+          <h4>Appointment List</h4>
+          {loading ? (
+            <div className="loading-coords">Loading address information...</div>
+          ) : geocodedAppointments.length === 0 && appointments.length > 0 ? (
+            <div className="no-appointments">Could not resolve any appointment addresses</div>
+          ) : geocodedAppointments.length === 0 ? (
+            <div className="no-appointments">No appointments to display</div>
+          ) : (
+            <>
+              <div className="geocode-stats">
+                <span className="success-count">
+                  Success: {geocodedAppointments.filter(a => a.coordinates).length}/{geocodedAppointments.length}
+                </span>
+                {geocodedAppointments.filter(a => !a.coordinates).length > 0 && (
+                  <button 
+                    className="retry-geocoding"
+                    onClick={() => { 
+                      setLoading(true);
+                      setTimeout(() => { processAppointments(); }, 100);
+                    }}
+                    disabled={loading}
+                  >
+                    Retry Geocoding
+                  </button>
+                )}
+              </div>
+              <ul>
+                {geocodedAppointments
+                  .sort((a, b) => new Date(a.start) - new Date(b.start))
+                  .map((appointment) => {
+                    const props = appointment.extendedProps || {};
+                    const hasCoords = !!appointment.coordinates;
+                    const geocodeError = appointment.geocodeError;
+                    
+                    return (
+                    <li 
+                      key={appointment.id} 
+                      className={`${hasCoords ? 'has-coords' : 'no-coords'} ${selectedAppointment?.id === appointment.id ? 'selected' : ''}`}
+                      onClick={() => hasCoords && handleMarkerClick(appointment)}
+                      title={!hasCoords 
+                        ? `Address geocoding failed: ${geocodeError || 'Unknown error'}`
+                        : 'Click to view on map'}
+                    >
+                      <div className="appointment-time">
+                        <FaCalendarAlt />
+                        {moment(appointment.start).format('MM/DD HH:mm')}
+                      </div>
+                      <div className="appointment-client">{props.clientName || appointment.title || 'Unnamed Client'}</div>
+                      <div className="appointment-service-name"> 
+                        <span role="img" aria-label="Service">🛠️</span>
+                        {props.serviceName || 'Unknown Service'}
+                      </div>
+                      <div className="appointment-address" 
+                        title={appointment.formattedAddress || props.address?.line1 || 'Address information missing'}>
+                        <FaMapMarkerAlt className={!hasCoords ? 'error-icon' : ''} />
+                        {appointment.formattedAddress || props.address?.line1 || 'Address information missing'}
+                        
+                        {!hasCoords && geocodeError && (
+                          <span className="error-reason">
+                            {geocodeError.includes('not found') ? '(Not found)' : '(Geocoding failed)'}
+                          </span>
+                        )}
+                      </div>
+                    </li>
+                  )})}
+              </ul>
+            </>
+          )}
+        </div>
+        
+        <div className="leaflet-map-container">
+          {loading ? (
+            <div className="map-loading">Loading map data...</div>
+          ) : geocodedAppointments.length === 0 ? (
+            <div className="no-appointments">No appointments to display</div>
+          ) : (
+            <MapContainer 
+              center={[3.1390, 101.6869]} // Default to KL, Malaysia
+              zoom={11} 
+              className="leaflet-map"
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              
+              <MapUpdater appointments={geocodedAppointments} />
+              
+              {/* Render appointment markers */}
+              {geocodedAppointments.map(appointment => {
+                if (!appointment.coordinates) return null;
+                
+                const teamName = appointment.extendedProps?.teamName;
+                const teamId = appointment.extendedProps?.teamId;
+                
+                return (
+                  <Marker
+                    key={appointment.id}
+                    position={[appointment.coordinates.lat, appointment.coordinates.lng]}
+                    eventHandlers={{
+                      click: () => handleMarkerClick(appointment)
+                    }}
+                  >
+                    <Popup>
+                      <div className="map-info-window">
+                        <h3>{appointment.title}</h3>
+                        <p><strong>Time:</strong> {new Date(appointment.start).toLocaleString()}</p>
+                        <p><strong>Service:</strong> {appointment.extendedProps.serviceName || 'Not specified'}</p>
+                        <p><strong>Address:</strong> {appointment.formattedAddress}</p>
+                        <p><strong>Team:</strong> {teamName || 'Not assigned'}</p>
+                        
+                        <div className="map-popup-actions">
+                          <button 
+                            className="team-assignment-btn"
+                            onClick={(e) => handleOpenTeamAssignment(appointment, e)}
+                          >
+                            <FaUsers /> {teamId ? 'Change Team' : 'Assign Team'}
+                          </button>
+                        </div>
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
+              })}
+              
+              {/* Render route if available */}
+              {showRoute && routeData && (
+                <Polyline
+                  positions={routeData.coordinates}
+                  color="#3388ff"
+                  weight={6}
+                  opacity={0.7}
+                  dashArray="10, 10"
+                >
+                  <Tooltip permanent>
+                    {routeData.distance} km ({routeData.duration} minutes)
+                  </Tooltip>
+                </Polyline>
+              )}
+            </MapContainer>
+          )}
+        </div>
+      </div>
+      
+      {/* Team Assignment Modal */}
+      {showTeamAssignmentModal && (
+        <TeamAssignmentModal
+          isOpen={showTeamAssignmentModal}
+          onClose={() => setShowTeamAssignmentModal(false)}
+          appointment={appointmentForTeamAssignment}
+          onTeamAssigned={handleTeamAssigned}
+        />
+      )}
+    </div>
+  );
+};
+
+// --- Add error boundary component ---
+class MapErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Map Error Boundary caught an error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="map-error-container">
+          <h3>Map Loading Error</h3>
+          <p>An error occurred while loading the map component.</p>
+          <button onClick={() => this.setState({ hasError: false, error: null })}>
+            Retry Loading
+          </button>
+          <details>
+            <summary>Error Details</summary>
+            <pre>{this.state.error?.message || 'Unknown error'}</pre>
+          </details>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Modify export component, use error boundary wrapping
+const AppointmentMapWithErrorBoundary = (props) => (
+  <MapErrorBoundary>
+    <AppointmentMap {...props} />
+  </MapErrorBoundary>
+);
+
+// Modify export
+export default AppointmentMapWithErrorBoundary; 

@@ -1,0 +1,250 @@
+.test-console {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.test-console-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.test-console-header h3 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.test-console-header p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.test-console-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.test-input-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+.test-result-panel {
+  flex: 1;
+  min-width: 0;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  padding: 16px;
+  height: 100%;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-row .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #1a73e8;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+
+.test-button {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.test-button:hover {
+  background-color: #0d62d1;
+}
+
+.test-button:disabled {
+  background-color: #8eb8f0;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: rgba(239, 83, 80, 0.1);
+  border-left: 3px solid #ef5350;
+  color: #c62828;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  border-radius: 0 4px 4px 0;
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0;
+  color: #666;
+  font-style: italic;
+}
+
+.loading-indicator::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border: 2px solid rgba(26, 115, 232, 0.3);
+  border-radius: 50%;
+  border-top-color: #1a73e8;
+  animation: spin 1s linear infinite;
+}
+
+.no-result-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.result-container {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.response-preview {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.response-header {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+.response-text {
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.match-details {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.match-details h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.match-detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.match-detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.detail-value {
+  color: #1a73e8;
+  font-weight: 500;
+}
+
+.match-type {
+  display: flex;
+  align-items: center;
+}
+
+.match-type i {
+  margin-right: 6px;
+}
+
+.match-direct {
+  color: #4caf50;
+}
+
+.match-intent {
+  color: #2196f3;
+}
+
+.match-fallback {
+  color: #ff9800;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .test-console-container {
+    flex-direction: column;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .test-result-panel {
+    margin-top: 20px;
+  }
+} 

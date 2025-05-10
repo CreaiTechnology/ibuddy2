@@ -1,0 +1,168 @@
+/* Shared styles for Login and Register Forms */
+
+.auth-page-container {
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column;
+    justify-content: center; /* Center form vertically */
+    min-height: calc(100vh - 150px); /* Adjust min height based on approx Navbar/Footer height */
+    padding-top: 80px; /* Add some padding top (adjust based on Navbar height) */
+    padding-bottom: 40px;
+}
+
+.auth-form-container {
+    max-width: 450px; 
+    margin: 0 auto; /* Center horizontally, remove vertical margin as page container handles it */
+    padding: 35px 45px; /* Slightly adjust padding */
+    background: var(--card-bg); 
+    border-radius: 16px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); /* Slightly stronger shadow */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Slightly more visible border */
+}
+
+.auth-form-container h2 {
+    text-align: center;
+    margin-bottom: 30px; /* Increase space below title */
+    font-size: 2rem; /* Adjust title size */
+    color: var(--light); /* Ensure title color */
+    background: none; /* Remove gradient from H2 inside form */
+    -webkit-background-clip: unset;
+    background-clip: unset;
+}
+
+.form-group {
+    margin-bottom: 20px; /* Consistent spacing */
+}
+
+.form-group label {
+    display: block; /* Ensure label is on its own line */
+    margin-bottom: 8px; /* Space between label and input */
+    font-weight: 500;
+    font-size: 0.95rem; /* Slightly larger label */
+    color: var(--light-gray);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 14px 16px; /* Adjust input padding */
+    border-radius: 8px; /* Match button border-radius */
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(15, 23, 42, 0.5); /* Darker input background */
+    color: var(--light);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.3); /* Focus indicator */
+}
+
+.auth-form-container .btn-primary {
+    width: 100%;
+    padding: 15px 0; /* Increase padding slightly */
+    font-size: 1.15rem; /* Slightly larger font */
+    font-weight: 700; /* Bolder text */
+    margin-top: 15px; 
+    letter-spacing: 0.5px; /* Add subtle letter spacing */
+}
+
+.error-message {
+    color: #ff7b7b; /* Slightly adjust error color */
+    background-color: rgba(255, 107, 107, 0.15);
+    border: 1px solid rgba(255, 107, 107, 0.4);
+    padding: 12px 18px; /* Adjust padding */
+    margin-bottom: 25px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.social-button-container {
+    display: flex;
+    flex-direction: column; /* Stack social buttons vertically */
+    align-items: center; /* Center align buttons */
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-button {
+    width: 100%; /* Make buttons full width */
+    max-width: 300px; /* Optional: Limit max width */
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content */
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.social-button:hover {
+    transform: translateY(-2px);
+}
+
+/* Google Button - Refined Style */
+.google-button {
+    background: #ffffff;
+    color: #3c4043; /* Google uses this darker grey */
+    border: 1px solid #dadce0;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15); 
+    /* More accurate Google shadow */
+    font-family: "Google Sans", arial, sans-serif; /* Use Google font if available */
+    font-weight: 500;
+}
+
+.google-button:hover {
+    background: #f8f9fa; /* Slight grey on hover */
+    border-color: #c6c6c6;
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
+}
+
+.google-button i.fab.fa-google {
+    /* Using FontAwesome icon, ideally use Google SVG icon */
+    /* If using an SVG instead of <i>: */
+    /* background-image: url('path/to/google-icon.svg'); */
+    /* background-repeat: no-repeat; */
+    /* background-size: 18px 18px; */
+    /* width: 18px; */
+    /* height: 18px; */
+    /* margin-right: 8px; */
+    /* display: inline-block; */
+    
+    /* Styling FontAwesome icon */
+    color: transparent; /* Hide the default icon color */
+    background: conic-gradient(from -45deg, #4285f4 0deg 90deg, #34a853 90deg 180deg, #fbbc05 180deg 270deg, #ea4335 270deg 360deg);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: 1.3em; /* Adjust size if needed */
+}
+
+/* Removed Facebook button styles */
+
+.auth-switch-link {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--light-gray);
+}
+
+.auth-switch-link a {
+    color: var(--tertiary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.auth-switch-link a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+} 

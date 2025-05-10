@@ -1,0 +1,361 @@
+/* Platform API Management页面样式 */
+
+.platform-api-container {
+  padding-top: 80px;
+  padding-bottom: 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.platform-api-header {
+  margin-bottom: 2.5rem;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.platform-api-header h2 {
+  margin-bottom: 0.8rem;
+  color: #333;
+  font-weight: 700;
+  font-size: 2.2rem;
+}
+
+.platform-api-header p {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* 平台统计和搜索区域 */
+.platform-dashboard {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.platform-stats {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.platform-stat-card {
+  display: flex;
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stat-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+/* 分类过滤器样式 */
+.category-filters {
+  margin-top: 15px;
+}
+
+.category-filters .btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 20px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+}
+
+.category-filters .btn:hover {
+  transform: translateY(-2px);
+}
+
+.category-filters .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.category-filters .btn-outline-secondary {
+  color: #6c757d;
+  border-color: #ced4da;
+}
+
+.category-filters .btn-outline-secondary:hover {
+  background-color: #f1f3f5;
+  color: #495057;
+  border-color: #adb5bd;
+}
+
+/* 平台卡片样式 */
+.platform-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+  transition: all 0.35s ease;
+  margin-bottom: 20px;
+  overflow: hidden;
+  height: 100%;
+  border: none;
+  position: relative;
+}
+
+.platform-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+.platform-card.authorized {
+  border-left: 4px solid #28a745;
+}
+
+.platform-card.unauthorized {
+  border-left: 4px solid #6c757d;
+}
+
+/* 卡片标题区域 */
+.platform-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.platform-icon-container {
+  margin-right: 1rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.platform-title {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.platform-title .card-title {
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  padding: 0.35em 0.65em;
+  border-radius: 20px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.status-badge.bg-success {
+  background-color: #28a745 !important;
+}
+
+.status-badge.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+/* 平台描述 */
+.platform-description {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 1.2rem;
+  min-height: 60px;
+  line-height: 1.5;
+}
+
+/* 账号信息 */
+.account-info {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  margin-bottom: 1.2rem;
+  transition: all 0.2s;
+}
+
+.account-info:hover {
+  background-color: #f1f3f5;
+}
+
+.account-name, .account-date {
+  margin-bottom: 0.4rem;
+}
+
+.account-name strong, .account-date strong {
+  display: inline-block;
+  width: 85px;
+  color: #495057;
+}
+
+/* 操作按钮 */
+.platform-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  padding: 0.45rem 1.3rem;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: all 0.25s;
+  width: 100%;
+  text-align: center;
+}
+
+.action-button.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+}
+
+.action-button.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.action-button.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.action-button.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+.action-button:hover {
+  transform: translateY(-3px);
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.platform-card {
+  animation: fadeInUp 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+/* 依次显示卡片的延迟 */
+.row > div:nth-child(1) .platform-card { animation-delay: 0.1s; }
+.row > div:nth-child(2) .platform-card { animation-delay: 0.2s; }
+.row > div:nth-child(3) .platform-card { animation-delay: 0.3s; }
+.row > div:nth-child(4) .platform-card { animation-delay: 0.4s; }
+.row > div:nth-child(5) .platform-card { animation-delay: 0.5s; }
+.row > div:nth-child(6) .platform-card { animation-delay: 0.6s; }
+.row > div:nth-child(7) .platform-card { animation-delay: 0.7s; }
+.row > div:nth-child(8) .platform-card { animation-delay: 0.8s; }
+.row > div:nth-child(9) .platform-card { animation-delay: 0.9s; }
+
+/* 加载中动画 */
+.spinner-border {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-width: 0.15em;
+}
+
+/* 响应式调整 */
+@media (max-width: 992px) {
+  .platform-api-header h2 {
+    font-size: 2rem;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .platform-api-container {
+    padding-top: 70px;
+    padding-bottom: 40px;
+  }
+  
+  .platform-api-header {
+    margin-bottom: 2rem;
+  }
+  
+  .platform-api-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .platform-dashboard {
+    padding: 15px;
+  }
+  
+  .platform-stat-card {
+    padding: 10px;
+  }
+  
+  .stat-value {
+    font-size: 22px;
+  }
+
+  .platform-description {
+    min-height: auto;
+  }
+  
+  .platform-card {
+    margin-bottom: 15px;
+  }
+  
+  .account-name strong, .account-date strong {
+    width: 75px;
+  }
+}
+
+@media (max-width: 576px) {
+  .platform-api-header h2 {
+    font-size: 1.6rem;
+  }
+  
+  .platform-icon-container {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .action-button {
+    padding: 0.4rem 1rem;
+  }
+  
+  .stat-value {
+    font-size: 20px;
+  }
+} 
