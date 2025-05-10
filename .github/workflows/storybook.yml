@@ -1,0 +1,56 @@
+name: Storybook CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-storybook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd client
+          npm ci
+
+      - name: Build Storybook
+        run: |
+          cd client
+          npm ci
+          npm run build-storybook
+
+      # 启动 Storybook 服务 (后台)
+      - name: Start Storybook
+        run: |
+          cd client
+          npm ci
+          npm run storybook &
+
+      # 等待 Storybook 可用
+      - name: Wait for Storybook
+        run: |
+          cd client
+          npx wait-on http://127.0.0.1:6006
+
+      # 安装 Playwright 浏览器并运行交互测试，排除 backend Story
+      - name: Test Storybook
+        run: |
+          cd client
+          npx playwright install --with-deps
+          npm run test-storybook -- --config-dir .storybook --excludeTags backend --excludeTags layout-routing-issue
+
+      - name: Upload Storybook Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: storybook-static
+          path: client/storybook-static 

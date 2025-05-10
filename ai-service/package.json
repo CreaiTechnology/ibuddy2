@@ -1,0 +1,38 @@
+{
+  "name": "ibuddy2-ai-service",
+  "version": "1.0.0",
+  "description": "AI Service for ibuddy2 microservices",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1",
+    "@supabase/supabase-js": "^2.39.3",
+    "axios": "^1.6.2",
+    "amqplib": "^0.10.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "franc": "^6.1.0",
+    "helmet": "^7.1.0",
+    "ioredis": "^5.3.2",
+    "jsdom": "^23.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
+    "natural": "^6.9.0",
+    "openai": "^4.24.1",
+    "redis": "^4.6.13",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2"
+  }
+} 
